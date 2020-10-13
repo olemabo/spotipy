@@ -5,19 +5,13 @@ import json
 import modify_playback as modi
 import add_current_song_to_playlist as add_cur_song
 from colorama import Fore
-
-def proceed():
-    still_do_things = input("Do you want to continue? y/n: ")
-    while still_do_things not in ['y', 'n']:
-        still_do_things = input("Wrong input. Do you want to exit? y/n: ")
-    if still_do_things == 'y':
-        return True
-
-    else:
-        return False
+import get_current_playback_status as gcps
 
 
-def all():
+#print(json.dumps(current_user_info, sort_keys=True, indent=4))
+
+
+def spotify_terminal_interface():
     scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
             'playlist-modify-public playlist-modify-private user-read-currently-playing ' \
             'user-read-private user-top-read playlist-read-private playlist-read-collaborative'
@@ -26,7 +20,6 @@ def all():
     user_uri = current_user_info['uri']
     utl.clear_terminal()
 
-    #print(json.dumps(current_user_info, sort_keys=True, indent=4))
     skip_choice = False
     user_choice = None
     while True:
@@ -36,7 +29,7 @@ def all():
                   "What do you want to do\n" \
                   "0 - Search artist\n" \
                   "1 - Modify playback\n" \
-                  "2 - Get current playback (song, repeat, shuffle ... )\n" \
+                  "2 - Get current playback status \n" \
                   "3 - Add current song to playlist\n"
 
         number_of_options = 3
@@ -98,7 +91,7 @@ def all():
 
             modi.modify_spotify(modify_mod, modify_para)
             # still do spotipy things
-            still_proceed = proceed()
+            still_proceed = utl.proceed()
             if not still_proceed:
                 break
 
@@ -109,7 +102,10 @@ def all():
 
         if user_choice == 2:
             utl.clear_terminal()
-            print("Not implemented")
+            gcps.get_current_playback_status(sp)
+            if utl.proceed(message="Do you want to modify playback?"):
+                user_choice = 1
+                skip_choice = True
 
 
         if user_choice == 3:
@@ -124,5 +120,6 @@ def all():
         if user_choice == -1:
             break
 
-all()
+
+spotify_terminal_interface()
 

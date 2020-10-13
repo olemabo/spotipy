@@ -11,7 +11,7 @@ scope = 'user-read-private user-read-playback-state user-modify-playback-state '
 scope += ' user-read-private user-top-read playlist-read-private playlist-read-collaborative'
 
 
-def create_spotify_object(scope='', username=USER_NAME):
+def create_spotify_object(scope=scope, username=USER_NAME):
     # Create our spotify object with permissions
     global_path = os.path.dirname(os.path.abspath(__file__))
     auth = SpotifyOAuth(username=username, scope=scope, open_browser=True, cache_path=global_path + "/.cache")
@@ -20,10 +20,7 @@ def create_spotify_object(scope='', username=USER_NAME):
 
 
 def create_spotify_object_non_auth(username=USER_NAME):
-    return spotipy.Spotify(spotipy.SpotifyClientCredentials(client_id=CLIENT_ID,
-                                                                  client_secret=CLIENT_SECRET,
-
-                                                                  ))
+    return spotipy.Spotify(spotipy.SpotifyClientCredentials())
 
 
 

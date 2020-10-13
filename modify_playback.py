@@ -86,6 +86,7 @@ def choices_true_false(message):
             continue
         return choice_input
 
+
 def print_feedback_info_modify_parameter(modify):
     space = 3
     if modify == "repeat":

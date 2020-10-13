@@ -71,6 +71,17 @@ def specify_int_in_range(min, max, message="Your choice ", error=""):
         clear_terminal()
 
 
+def proceed(message="Do you want to continue?"):
+    still_do_things = input(message + " y/n: ")
+    while still_do_things not in ['y', 'n']:
+        still_do_things = input("Wrong input. " + message + " y/n: ")
+    if still_do_things == 'y':
+        return True
+
+    else:
+        return False
+
+
 def convert_list_string_to_sentence(list):
     list[0] = list[0].capitalize()
     list.insert(len(list)-1, "and " + list[-1])
