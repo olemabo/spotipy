@@ -1,6 +1,6 @@
 # spotipy
-# Scripts that utilize the spotify Web API. 
-# https://developer.spotify.com/documentation/web-apii/
+Scripts that utilize the spotify Web API. 
+https://developer.spotify.com/documentation/web-apii/
 # Spotipy will also be used, which is the lightweight Python library for the Spotify Web API. With Spotipy you get full access to all of the music data provided by the Spotify platform.
 
 # The main focus with this project is to create easy and quick terminal code to achieve maximum Spotify experience from terminal (which is what we all want). 
