@@ -1,0 +1,31 @@
+# from terminal with command line:
+# add_queue "queue" limit
+# example: add_queue "artist:coldplay" 5
+
+# get top list country
+# add more than one song
+# add entire album
+# number \t artist \t  track \t popularity nicely done
+
+# search for artist specifically. artist=AK
+# add random songs from followed artists
+
+
+# add random songs from my playlists and how I am following
+
+
+# when did you first add a song
+
+# add current song to playlist   DONE
+
+# how do you get private playlists? DONE
+
+# start to play an album, start to play your own playlist, start to play to songs from artist
+
+# add when an artist first gave out a track, just go trhough all his/hers song and find oldest song
+
+# what do you want to play:
+# from playlist: show all songs, velge om du vil slette eller spille av sang eller legge i kø
+
+# add x amount of songs to queue. based on favorite artists, chosen artists, followed artists,
+related artists to floowed rtists, artist top tracks
