@@ -3,6 +3,8 @@ import os
 from colorama import Fore
 import dateutil.parser as dp
 import unicodedata
+import json
+
 
 def find_str(s, char):
     index = 0
@@ -35,6 +37,7 @@ def RepresentsInt(s):
     except ValueError:
         return False
 
+
 def RepresentsFloat(s):
     try:
         float(s)
@@ -49,7 +52,7 @@ def specify_int_in_range(min, max, message="Your choice ", error=""):
     if len(error) > 0:
         temp_message += " ('" + str(error) + "' to exit)"
 
-    temp_message += ": "
+    temp_message += Fore.WHITE + ": " + Fore.WHITE
 
     while True:
         search_res = input(temp_message)
@@ -59,9 +62,9 @@ def specify_int_in_range(min, max, message="Your choice ", error=""):
         if RepresentsInt(search_res):
             if int(search_res) >= min and int(search_res) <= max:
                 return int(search_res)
-            temp_message += "Value out of range. Must be between " + str(min) + " and " + str(max) + ". Try again.\n"
+            temp_message += Fore.LIGHTRED_EX + "\nValue out of range. Must be between " + str(min) + " and " + str(max) + ". Try again.\n" + Fore.WHITE
         else:
-            temp_message += "Must be integer. Try again.\n"
+            temp_message += Fore.LIGHTRED_EX + "\nMust be integer. Try again.\n" + Fore.WHITE
 
         temp_message += "\nYour choice"
         if len(error) > 0:
@@ -184,3 +187,7 @@ def check_or_cross(what='check'):
     if what == 'cross':
         return u'\u274c'
     return -1
+
+
+def print_nice_json_format(json_):
+    print(json.dumps(json_, sort_keys=True, indent=4))

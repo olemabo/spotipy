@@ -176,7 +176,7 @@ def add_desired_song_to_queue(query, spotify_object, type='track', limit=3):
                     try:
                         spotify_object.add_to_queue(uri=dict_number_to_track_id[int(happy)][0])
                         print(Fore.LIGHTGREEN_EX + str(dict_number_to_track_id[int(happy)][1]) + " (" + str(dict_number_to_track_id[int(happy)][2]) + ")" + Fore.WHITE + " was added to the queue. ")
-                    except everything.exceptions.SpotifyException:
+                    except spotipy.exceptions.SpotifyException:
                         print("Player command failed: No active device found, reason: NO_ACTIVE_DEVICE.")
                         print("One device must play music before this can be done.")
                         return 0

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cf352f93-aac3-4eed-b7ac-8a8be668c79a" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="JupyterTrust" id="8becc3a8-0f0e-4777-b187-1517db9e0448" />
+  <component name="ProjectId" id="1hguJWHNFWG4T1SF3nUSlezQBky" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager" selected="Python.search_for_artist">
+    <configuration name="add_song_to_queue" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spotify" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/add_song_to_queue.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="import_artis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spotify" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="SPOTIPY_CLIENT_ID" value="69c9f328c3bd4a3998bff983ab0d9eb0" />
+        <env name="SPOTIPY_CLIENT_SECRET" value="11e9de3b46b541cd94a597615477e9e4" />
+        <env name="SPOTIPY_REDIRECT_URI" value="https://example.com/callback/" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/import_artis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="search_for_artist" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spotify" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/search_for_artist.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spotify" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="utility_functions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spotify" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utility_functions.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.import_artis" />
+      <item itemvalue="Python.test" />
+      <item itemvalue="Python.add_song_to_queue" />
+      <item itemvalue="Python.utility_functions" />
+      <item itemvalue="Python.search_for_artist" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.search_for_artist" />
+        <item itemvalue="Python.utility_functions" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.add_song_to_queue" />
+        <item itemvalue="Python.import_artis" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cf352f93-aac3-4eed-b7ac-8a8be668c79a" name="Default Changelist" comment="" />
+      <created>1600444987319</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600444987319</updated>
+      <workItem from="1600444988979" duration="1178000" />
+      <workItem from="1600446184963" duration="209000" />
+      <workItem from="1600446405408" duration="3019000" />
+      <workItem from="1600543258392" duration="13655000" />
+      <workItem from="1600713204472" duration="23658000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="559" y="242" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600593447421">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="1490" y="841" key="#com.intellij.execution.impl.EditConfigurationsDialog/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600448597731" />
+    <state x="559" y="242" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1600593447421" />
+    <state x="860" y="422" width="309" height="504" key="EnvironmentVariablesDialog" timestamp="1600547525835">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="1872" y="925" width="309" height="516" key="EnvironmentVariablesDialog/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600448593509" />
+    <state x="860" y="422" width="309" height="504" key="EnvironmentVariablesDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1600547525835" />
+    <state width="977" height="382" key="GridCell.Tab.0.bottom" timestamp="1600797452598">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1817" height="278" key="GridCell.Tab.0.bottom/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600712762569" />
+    <state width="977" height="382" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1600797452598" />
+    <state width="977" height="382" key="GridCell.Tab.0.center" timestamp="1600797452597">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1817" height="278" key="GridCell.Tab.0.center/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600712762569" />
+    <state width="977" height="382" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1600797452597" />
+    <state width="977" height="382" key="GridCell.Tab.0.left" timestamp="1600797452597">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1817" height="278" key="GridCell.Tab.0.left/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600712762569" />
+    <state width="977" height="382" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1600797452597" />
+    <state width="977" height="382" key="GridCell.Tab.0.right" timestamp="1600797452598">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1817" height="278" key="GridCell.Tab.0.right/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600712762569" />
+    <state width="977" height="382" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1600797452598" />
+    <state width="1807" height="340" key="GridCell.Tab.1.bottom" timestamp="1600674316748">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="340" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1600674316748" />
+    <state width="1807" height="340" key="GridCell.Tab.1.center" timestamp="1600674316748">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="340" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1600674316748" />
+    <state width="1807" height="340" key="GridCell.Tab.1.left" timestamp="1600674316748">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="340" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1600674316748" />
+    <state width="1807" height="340" key="GridCell.Tab.1.right" timestamp="1600674316748">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="340" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1600674316748" />
+    <state x="1527" y="707" key="SettingsEditor" timestamp="1600448173348">
+      <screen x="1050" y="520" width="1920" height="1080" />
+    </state>
+    <state x="1527" y="707" key="SettingsEditor/1050.520.1920.1080/0.547.1050.1282/2970.0.1080.1920@1050.520.1920.1080" timestamp="1600448173348" />
+    <state x="656" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1600763020511">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="656" y="259" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1600763020511" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/spotify$import_artis.coverage" NAME="import_artis Coverage Results" MODIFIED="1600448838290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spotify$test.coverage" NAME="test Coverage Results" MODIFIED="1600715711203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spotify$tekore.coverage" NAME="tekore Coverage Results" MODIFIED="1600593223292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spotify$search_for_artist.coverage" NAME="search_for_artist Coverage Results" MODIFIED="1600786078896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spotify$utility_functions.coverage" NAME="utility_functions Coverage Results" MODIFIED="1600775981280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spotify$search_artist.coverage" NAME="search_artist Coverage Results" MODIFIED="1600676581735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

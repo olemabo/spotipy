@@ -6,7 +6,7 @@ import modify_playback as modi
 import add_current_song_to_playlist as add_cur_song
 from colorama import Fore
 import get_current_playback_status as gcps
-
+import create_relevant_queue as crq
 
 #print(json.dumps(current_user_info, sort_keys=True, indent=4))
 
@@ -19,7 +19,7 @@ def spotify_terminal_interface():
     current_user_info = sp.current_user()
     user_uri = current_user_info['uri']
     utl.clear_terminal()
-
+    #print(utl.print_nice_json_format(sp.current_user_playing_track()))
     skip_choice = False
     user_choice = None
     while True:
@@ -30,9 +30,11 @@ def spotify_terminal_interface():
                   "0 - Search artist\n" \
                   "1 - Modify playback\n" \
                   "2 - Get current playback status \n" \
-                  "3 - Add current song to playlist\n"
+                  "3 - Add current song to playlist\n" \
+                  "4 - Add songs to queue\n" \
+                  "5 TODO "
 
-        number_of_options = 3
+        number_of_options = 4
 
         if not skip_choice:
             user_choice = utl.specify_int_in_range(0, number_of_options, message=message, error='x')
@@ -116,6 +118,52 @@ def spotify_terminal_interface():
                     print(Fore.BLUE + i.split("was")[0] + Fore.WHITE + i.split("was")[1])
                 print()
                 print()
+
+
+        if user_choice == 4:
+            utl.clear_terminal()
+            queue_message = Fore.LIGHTBLUE_EX + "How do you want to add songs to queue?\n\n" + Fore.WHITE + \
+                    "1. Search for song and add to queue \n" \
+                    "2. Add random songs to queue based on related artists to the artists you are following\n" \
+                    "3. Add random songs from all your playlists\n" \
+                    "4. Choose artists you are following. Or search for artists. \n"
+            add_song_queue_choice = utl.specify_int_in_range(0, 3, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
+
+            if int(add_song_queue_choice) == 1:
+                print("Not yet implemented")
+            if int(add_song_queue_choice) == 2:
+                print("\nYou will add random songs based on artists relevant to the artists you are following.\n")
+                number_of_tracks_to_add = utl.specify_int_in_range(1, 50, Fore.LIGHTBLUE_EX + "Choose number of tracks to add to queue (1-50). " + Fore.WHITE)
+
+                random_dict = {1: "uniform", 2: "relevance"}
+
+                message_artist = Fore.LIGHTBLUE_EX +"\nWhen a random artist you follow is picked, we will have to pick one of 20 relevant artists.\n" \
+                                  "How will you choose the relevant artist? \n\n" + Fore.WHITE + \
+                                 "1. Equal probability of picking all the relevant artists. \n" \
+                                 "2. Higher probability of picking more relevant artists."
+
+                message_track = Fore.LIGHTBLUE_EX + "\nWhen a relevant artists is found, we will have to pick one of its top 10 tracks.\n" \
+                                 "How will you choose among the top tracks? \n\n" + Fore.WHITE + \
+                                 "1. Equal probability of picking all the tracks. \n" \
+                                 "2. Higher probability of picking more popular tracks."
+
+                random_artist = random_dict[utl.specify_int_in_range(1, 2, message_artist)]
+                random_track = random_dict[utl.specify_int_in_range(1, 2, message_track)]
+                print()
+                crq.add_x_random_top_track_from_random_follower_to_queue(sp, int(number_of_tracks_to_add), random_artist, random_track)
+
+            if int(add_song_queue_choice) == 3:
+                print("Not yet implemented")
+
+            print()
+            print()
+
+        if user_choice == 5:
+            print("TODO")
+            print("Add next_track() / pause_playback / previous_track() ")
+            print("recommendation_genre_seeds(), recommendations()")
+            print("Start a track: sp.start_playback(uris=['spotify:track:7lEptt4wbM0yJTvSG5EBof'])")
+            print("Add to queue should also include songs by the artists you are following. 'Include the artists uou are following?'")
         # break the while loop and end spotipy
         if user_choice == -1:
             break

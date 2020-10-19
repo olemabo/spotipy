@@ -268,6 +268,18 @@ def check_if_track_is_in_playlist(track_uri, playlist_uri, sp):
     return False
 
 
+def add_song_to_queue(spotify_object, id, track_name, artist, following_artist):
+    try:
+        print(Fore.LIGHTRED_EX)
+        spotify_object.add_to_queue(id)
+        print(Fore.WHITE + str(following_artist) + " -> " + Fore.LIGHTGREEN_EX + str(track_name) + Fore.WHITE + " (" + str(artist) + ")" + " was added to the queue.")
+        return 1
+    except Exception as e:
+        #print(Fore.LIGHTRED_EX + "Player command failed: No active device found. Reason: NO_ACTIVE_DEVICE.")
+        #print("One device must play music before this can be done." + Fore.WHITE)
+        print(Fore.LIGHTRED_EX + str(e) + Fore.WHITE)
+        return 0
+
 
 #playlist_uri = 'https://open.spotify.com/playlist/5r5lGanRM2v1RJK1jhsxAJ'
 #song_uri = 'https://open.spotify.com/track/2Mb9K8vDqygdZ7FVWi2IRa'
