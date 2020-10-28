@@ -1,4 +1,4 @@
-# from terminal with command line:
+# From terminal with command line:
 # add_queue "queue" limit
 # example: add_queue "artist:coldplay" 5
 
