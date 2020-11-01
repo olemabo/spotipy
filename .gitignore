@@ -1,4 +1,4 @@
 /client_info
 /.cache
-__pycache__
-.idea
+/__pycache__
+/.idea
