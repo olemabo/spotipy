@@ -10,21 +10,22 @@ import utility_spotify as utl_sp
 #  how to use scope variables
 #https://developer.spotify.com/documentation/general/guides/scopes/
 
+if __name__ == "__main__":
 
-parser = argparse.ArgumentParser()
-parser.add_argument("query", help='Specify artist, track and album you want to find. You can specify all of them and the names '
-                                  'must not be absolutely correct. Write like this: '
-                                  '"artist:coldplay'
-                                  'album:viva la vida '
-                                  'track:Death and all his friends". ("artist:coldplay")', type=str)
-parser.add_argument("limit", help="Look for this number of search results. If you are precice with artist, album and track search, a small number here is enough. "
-                                  " (10) ", type=int)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query", help='Specify artist, track and album you want to find. You can specify all of them and the names '
+                                      'must not be absolutely correct. Write like this: '
+                                      '"artist:coldplay'
+                                      'album:viva la vida '
+                                      'track:Death and all his friends". ("artist:coldplay")', type=str)
+    parser.add_argument("limit", help="Look for this number of search results. If you are precice with artist, album and track search, a small number here is enough. "
+                                      " (10) ", type=int)
 
-if len(sys.argv[1:]) == 0:
-    parser.print_help()
-    parser.exit()
+    if len(sys.argv[1:]) == 0:
+        parser.print_help()
+        parser.exit()
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
 
 def print_query(query, print_to_screen=True):
@@ -47,7 +48,7 @@ def print_query(query, print_to_screen=True):
             idx.append([start_idx, string])
             all_idxes.append([start_idx])
     if len(idx) == 0:
-        print("Wrong input: " + Fore.RED + str(query) + Fore.WHITE)
+        print("\nWrong input: " + Fore.RED + str(query) + Fore.WHITE)
         print("Remember, input must include at least one of the following words: [artist, track, album] followed by a ':'. "
               "\nExample: artist:coldplay album:viva la vida")
         return -1
@@ -57,7 +58,7 @@ def print_query(query, print_to_screen=True):
         print("Search for: ")
     for i in range(len(idx)):
         if str(query[all_idxes[i+1][0] - 1]) != " " and i != len(idx)-1:
-            print("Wrong input: " + Fore.RED + str(query) + Fore.WHITE)
+            print("\nWrong input: " + Fore.RED + str(query) + Fore.WHITE)
             print(
                 "Remember, there must be space between input search. "
                 "\nOK: artist:coldplay album:viva la vida"
@@ -85,8 +86,9 @@ def search_for_track(query, spotify_object, type='track', limit=3):
         song_id = info['id']
         popularity = info['popularity']
         artist = info['artists'][0]['name']
-        song_name, emoji_len_count = utl_sp.shorten_long_names_count_emojis(info=info, max_letters=(N_2-5))
-        album_name, emoji_len_count = utl_sp.shorten_long_names_count_emojis(info=info['album'], max_letters=25)
+
+        song_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info, max_letters=(N_2-5))
+        album_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info['album'], max_letters=25)
         second_n = N_2 - len(str(song_name))
         first_n = N_1 - len(str(count+1)) + 1
         print(str(count+1) + ":" + " "*first_n + "    " + str(song_name) + " "*second_n + str(artist) + " / "
@@ -183,8 +185,12 @@ def add_desired_song_to_queue(query, spotify_object, type='track', limit=3):
             return 0
         utl.clear_terminal()
 
-scope = 'user-modify-playback-state user-library-read user-read-email user-read-private user-top-read user-modify-playback-state user-read-playback-state'
-#result = utl_sp.create_spotify_object(scope=scope).search(q=args.query, type="playlist", limit=5, offset=0)
-#print(result)
-sp = utl_sp.create_spotify_object(scope=scope)
-add_desired_song_to_queue(query=args.query, spotify_object=sp, limit=args.limit)
+
+
+if __name__ == "__main__":
+
+    scope = 'user-modify-playback-state user-library-read user-read-email user-read-private user-top-read user-modify-playback-state user-read-playback-state'
+    #result = utl_sp.create_spotify_object(scope=scope).search(q=args.query, type="playlist", limit=5, offset=0)
+    #print(result)
+    sp = utl_sp.create_spotify_object(scope=scope)
+    add_desired_song_to_queue(query=args.query, spotify_object=sp, limit=args.limit)

@@ -1,14 +1,15 @@
-import spotipy
+from colorama import Fore
+
+# my functions
 import utility_spotify as utl_sp
 import utility_functions as utl
-import json
 import modify_playback as modi
 import add_current_song_to_playlist as add_cur_song
-from colorama import Fore
 import get_current_playback_status as gcps
 import create_relevant_queue as crq
-
-#print(json.dumps(current_user_info, sort_keys=True, indent=4))
+import search_for_artist as sfa
+import add_song_to_queue as astq
+import first_occurance_of_artist as fooc
 
 
 def spotify_terminal_interface():
@@ -19,27 +20,31 @@ def spotify_terminal_interface():
     current_user_info = sp.current_user()
     user_uri = current_user_info['uri']
     utl.clear_terminal()
-    #print(utl.print_nice_json_format(sp.current_user_playing_track()))
     skip_choice = False
     user_choice = None
+
+    print("Welcome! \n" \
+                  "Your are connected with " + str(current_user_info['id']) + "'s account.\n")
+
     while True:
 
-        message = "Welcome! \n" \
-                  "Your are connected with " + str(current_user_info['id']) + "'s account.\n\n" \
-                  "What do you want to do\n" \
+        message =  Fore.LIGHTBLUE_EX + "What do you want to do? \n" + Fore.WHITE + \
                   "0 - Search artist\n" \
                   "1 - Modify playback\n" \
                   "2 - Get current playback status \n" \
                   "3 - Add current song to playlist\n" \
                   "4 - Add songs to queue\n" \
-                  "5 TODO "
+                  "5 - Find first occurrence of an artist in your playlists "
 
-        number_of_options = 4
+        number_of_options = utl.find_largest_number_in_string(message)
 
         if not skip_choice:
             user_choice = utl.specify_int_in_range(0, number_of_options, message=message, error='x')
 
+        utl.clear_terminal()
+
         if user_choice == 0:
+            # Put all this in a function
             spotifyObject = sp
             searchQuery = "coldplay"
             searchResults = spotifyObject.search(searchQuery, 1, 0, "artist")
@@ -90,15 +95,8 @@ def spotify_terminal_interface():
                 continue
 
             modify_para = modi.print_feedback_info_modify_parameter(modify_mod)
-
             modi.modify_spotify(modify_mod, modify_para)
-            # still do spotipy things
-            still_proceed = utl.proceed()
-            if not still_proceed:
-                break
-
             skip_choice = False
-            utl.clear_terminal()
 
 
 
@@ -123,17 +121,31 @@ def spotify_terminal_interface():
         if user_choice == 4:
             utl.clear_terminal()
             queue_message = Fore.LIGHTBLUE_EX + "How do you want to add songs to queue?\n\n" + Fore.WHITE + \
-                    "1. Search for song and add to queue \n" \
-                    "2. Add random songs to queue based on related artists to the artists you are following\n" \
-                    "3. Add random songs from all your playlists\n" \
-                    "4. Choose artists you are following. Or search for artists. \n"
-            add_song_queue_choice = utl.specify_int_in_range(0, 3, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
+                    "1. Search for song and add to queue (x)\n" \
+                    "2. Add random songs based on related artists to the artists you are following\n" \
+                    "3. Add random songs from all your playlists \n" \
+                    "4. Choose artists you are following. (x) \n" \
+                    "5. Search for artists and add songs from related artists. \n" \
+                    "6. Search for artist and chose between his/her songs. (x) \n" \
+                    "7. Search for artists, songs from these artists only.\n" \
+                    "8. Find songs by genre (x) \n"
+            add_song_queue_choice = utl.specify_int_in_range(1, 7, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
+
+            utl.clear_terminal()
 
             if int(add_song_queue_choice) == 1:
                 print("Not yet implemented")
+                #a = utl_sp.search_one_type(sp, "Dawn", "track", limit=3)
+                #print(a)
+                # may use this function. Can search for artist, album and track.
+                # you should make a smart way to let the user specify what to search for.
+                a = astq.add_desired_song_to_queue("artist:cold", sp, type='track', limit=3)
+                print(a)
+                b = 0
+
             if int(add_song_queue_choice) == 2:
-                print("\nYou will add random songs based on artists relevant to the artists you are following.\n")
-                number_of_tracks_to_add = utl.specify_int_in_range(1, 50, Fore.LIGHTBLUE_EX + "Choose number of tracks to add to queue (1-50). " + Fore.WHITE)
+                print("You will add random songs based on artists relevant to the artists you are following.\n")
+                number_of_tracks_to_add = utl.specify_int_in_range(1, 50, Fore.LIGHTBLUE_EX + "Specify the number of tracks you want to add to queue (1-50). " + Fore.WHITE)
 
                 random_dict = {1: "uniform", 2: "relevance"}
 
@@ -153,12 +165,71 @@ def spotify_terminal_interface():
                 crq.add_x_random_top_track_from_random_follower_to_queue(sp, int(number_of_tracks_to_add), random_artist, random_track)
 
             if int(add_song_queue_choice) == 3:
-                print("Not yet implemented")
+                print(Fore.LIGHTBLUE_EX + "\nAdd random songs from all of your playlists\n" + Fore.WHITE)
+                number_of_tracks_to_add = utl.specify_int_in_range(1, 50, Fore.LIGHTBLUE_EX + "Choose number of tracks to add to queue (1-50). " + Fore.WHITE)
+                crq.queue_from_random_playlist(sp, number_of_tracks_to_add)
 
-            print()
-            print()
+            if int(add_song_queue_choice) == 4:
+                print("not yet implemented")
+
+            if int(add_song_queue_choice) == 5:
+                number_of_tracks_to_add = utl.specify_int_in_range(1, 50,
+                                                                   Fore.LIGHTBLUE_EX + "\nChoose number of tracks to add to queue (1-50). " + Fore.WHITE)
+
+                random_dict = {1: "uniform", 2: "relevance"}
+                artist_dict = {1: True, 2: False}
+
+                message_artist = Fore.LIGHTBLUE_EX + "\nWhen a random artist you follow is picked, we will have to pick one of 20 relevant artists.\n" \
+                                                     "How will you choose the relevant artist? \n\n" + Fore.WHITE + \
+                                 "1. Equal probability of picking all the relevant artists. \n" \
+                                 "2. Higher probability of picking more relevant artists."
+
+                message_track = Fore.LIGHTBLUE_EX + "\nWhen a relevant artists is found, we will have to pick one of its top 10 tracks.\n" \
+                                                    "How will you choose among the top tracks? \n\n" + Fore.WHITE + \
+                                "1. Equal probability of picking all the tracks. \n" \
+                                "2. Higher probability of picking more popular tracks."
+
+                random_artist = random_dict[utl.specify_int_in_range(1, 2, message_artist)]
+                random_track = random_dict[utl.specify_int_in_range(1, 2, message_track)]
+
+                add_chosen_artist = artist_dict[utl.specify_int_in_range(1, 2, Fore.LIGHTBLUE_EX + "\nWill you include the chosen artists with the related artists? " + Fore.WHITE + "\n\n1. True\n2. False ")]
+                print()
+                print(Fore.LIGHTBLUE_EX + "You will now search for the artists you want to find related artists to. \n" + Fore.WHITE)
+                crq.add_related_artists_from_searched_artists(sp, number_of_tracks_to_add, random_artist=random_artist, random_track=random_track, include_given_artist=add_chosen_artist)
+
+            if int(add_song_queue_choice) == 6:
+                print("Not yet implemented")
+                a = sfa.search_for_one_artist_until_correct(sp)
+                print("Artist info: ", a)
+                print("Remains to find all songs for given artist to chose from")
+
+
+            if int(add_song_queue_choice) == 7:
+                print("7. Search for artists, songs from these artists only.\n")
+
+                print(Fore.LIGHTBLUE_EX + "You will now search for artists: \n" + Fore.WHITE)
+                artists = crq.search_for_artists(sp)
+
+                number_of_tracks_to_add = utl.specify_int_in_range(1, 50,
+                                                                   Fore.LIGHTBLUE_EX + "\nChoose number of tracks to add to queue (1-50). " + Fore.WHITE)
+
+                track_dict = {1: "top", 2: "all"}
+                message_artist = Fore.LIGHTBLUE_EX + "\nHow would you pick songs from your chosen artits?\n\n" + Fore.WHITE + \
+                                 "1. Randomly pick among top 10 songs. \n" \
+                                 "2. Randomly pick among all of the artists' songs."
+
+                top_all = track_dict[utl.specify_int_in_range(1, 2, message_artist)]
+                crq.add_random_songs_from_searched_artists(artists=artists, spotify_object=utl_sp.create_spotify_object(),
+                                                           number_of_songs_to_add=number_of_tracks_to_add, top_all=top_all)
+
+                print()
 
         if user_choice == 5:
+            fooc.first_occurance(sp)
+            print()
+            print()
+
+        if user_choice == 6:
             print("TODO")
             print("Add next_track() / pause_playback / previous_track() ")
             print("recommendation_genre_seeds(), recommendations()")
@@ -168,6 +239,11 @@ def spotify_terminal_interface():
         if user_choice == -1:
             break
 
+        if skip_choice == False:
+            if  utl.proceed():
+                utl.clear_terminal()
+            else:
+                break
 
 spotify_terminal_interface()
 

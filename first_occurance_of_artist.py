@@ -4,6 +4,7 @@ import dateutil.parser as dp
 from tqdm import tqdm
 import search_for_artist as s_art
 from colorama import Fore
+import search_for_artist as search
 
 
 def collect_all_playlists(sp):
@@ -46,43 +47,47 @@ def find_artist(sp):
     return artist_info[2], artist_info[3]
 
 
-def first_occurance(scope):
-    print("You will now be able to find out when a given artist first occurred in your playlists. ")
-    sp = utl_sp.create_spotify_object(scope=scope)
-    artist_id, artist_name = find_artist(sp)
+def first_occurance(sp):
+    print(Fore.LIGHTBLUE_EX + "\nYYou can now specify an artists and find out when he/she first occurred in your playlists.\n" +Fore.WHITE)
+    artist_id, artist_name = search.search_for_one_artist_until_correct(sp)[2:4]
     my_playlists = sp.current_user_playlists()
     all_playlists = utl_sp.select_playlists(sp, my_playlists, remove_spotify_playlist=True)
-    all_occurance_in_seconds = []
-    print("\nStart to go through " + str(len(all_playlists)) + " playlists... ")
+    all_occurrence_in_seconds = []
+    print("Start to go through " + str(len(all_playlists)) + " playlists... ")
     for i in tqdm(range(len(all_playlists))):
         playlist_uri = all_playlists[i]['uri']
         playlist_name = all_playlists[i]['name']
         artist_occurance = check_if_artist_is_in_playlist(sp, playlist_uri, artist_id)
         if len(artist_occurance) > 0:
             artist_occurance.append(playlist_name)
-            all_occurance_in_seconds.append(artist_occurance)
-    if len(all_occurance_in_seconds) == 0:
-        print("You don't have a single song from this artist in your playlists.")
-        return 0
+            all_occurrence_in_seconds.append(artist_occurance)
+    if len(all_occurrence_in_seconds) == 0:
+        print("\nYou don't have a single song from this artist in your playlists.")
 
-    first_occ_in_seconds = all_occurance_in_seconds[0][0]
-    first_occ_in_seconds.append(all_occurance_in_seconds[0][-1])
+    first_occ_in_seconds = all_occurrence_in_seconds[0][0]
+    first_occ_in_seconds.append(all_occurrence_in_seconds[0][-1])
 
-    for occurance_in_playlist in all_occurance_in_seconds:
+    for occurance_in_playlist in all_occurrence_in_seconds:
         num_occ_in_playlist = len(occurance_in_playlist) - 1
         for track in range(num_occ_in_playlist):
             if int(occurance_in_playlist[track][0]) < int(first_occ_in_seconds[0]):
                 first_occ_in_seconds = occurance_in_playlist[track]
                 first_occ_in_seconds.append(occurance_in_playlist[-1])
     timesplit = str(first_occ_in_seconds[1]).split("T")
+
+    year = timesplit[0].split("-")[0]
+    month = utl_sp.get_month_name_from_month_number(timesplit[0].split("-")[1])
+    day = timesplit[0].split("-")[2]
+    date = day + ". " + month + " " + year
     print("\nYour first song by " + Fore.LIGHTBLUE_EX + str(artist_name).capitalize() + Fore.WHITE + ""
-        "\nAdded " + Fore.LIGHTGREEN_EX + str(timesplit[0]) + Fore.WHITE + " at " + timesplit[1][:-1])
-    print("Song name: " + str(first_occ_in_seconds[2]) + "\nIn playlist: " + str(first_occ_in_seconds[-1]))
+        "\nAdded " + Fore.LIGHTGREEN_EX + str(date) + Fore.WHITE + " at " + timesplit[1][:-1])
+    print("Song name: " + Fore.CYAN + str(first_occ_in_seconds[2]) + Fore.WHITE +
+          "\nIn playlist: " + Fore.YELLOW + str(first_occ_in_seconds[-1]) + Fore.WHITE)
 
 
-scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
-        'playlist-modify-public playlist-modify-private user-read-currently-playing'
-scope += ' user-read-private user-top-read playlist-read-private playlist-read-collaborative'
+#scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
+#        'playlist-modify-public playlist-modify-private user-read-currently-playing'
+#scope += ' user-read-private user-top-read playlist-read-private playlist-read-collaborative'
 
 
-first_occurance(scope=scope)
+#first_occurance(scope=scope)

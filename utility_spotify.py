@@ -58,9 +58,9 @@ def search_one_type(sp, search_name, type, limit=3):
 
             print(str(idx+1) + " \t " + str(name) + " "*(line_adjustment-len(name) - emoji_len_count) + extra_info)
             search_dict[idx + 1] = [name, search_id, search_uri]
-        choose_search = input("\n1. Chose corresponding number to desired " + str(type) + ","
+        choose_search = input("\n1. Chose corresponding number to desired " + str(type) + "."
                             "\n2. Increase number of searches by specifing a larger number than " + str(len(search_dict)) +
-                             ",\n3. Specify a new search. \n4. 'x' to exit:   ")
+                             ".\n3. Specify a new search. \n4. 'x' to exit:   ")
         if utl.RepresentsInt(choose_search) and int(choose_search) > 0 and int(choose_search) <= len(search_dict):
             return search_dict[int(choose_search)]
         if choose_search == 'x':
@@ -127,7 +127,15 @@ def color_names(print_str, info, number, name):
 
 
 
-def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0, columns=3, jumps=28):
+def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0, columns=3, jumps=28, printing=True):
+    """
+    :param data:
+    :param dict_number_to_playlist:
+    :param start_count:
+    :param columns:
+    :param jumps:
+    :return: [['name'], ['id'], ['uri'], print_color]
+    """
     #num_playlists = len(data['items'])
     num_playlists = len(data)
     odd = len(data) % columns
@@ -146,8 +154,8 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
 
             print_str += " "*(jumps*(column+1) - len(print_str) - tot_emoji)
             dict_number_to_playlist[number] = [info['name'], info['id'], info['uri'], print_color]
-
-        print(print_str)
+        if printing:
+            print(print_str)
 
     if odd > 0:
         last_str = ""
@@ -161,7 +169,8 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
 
             last_str += " " * (jumps*(idx+1) - len(last_str))
             dict_number_to_playlist[number] = [info['name'], info['id'], info['uri'], print_color]
-        print(last_str)
+        if printing:
+            print(last_str)
 
     return dict_number_to_playlist, number
 
@@ -246,6 +255,21 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
     return return_playlist
 
 
+def return_all_playlists(sp, public=True, private=True, collaborative=True, printing=False):
+    data = sp.current_user_playlists()
+    playlist_to_show = select_playlists(sp, data, public, private, collaborative)
+
+    dict_number_to_playlist = dict()
+    total_playlists = len(playlist_to_show)
+    columns, jumps, limit = set_dividable_limits_based_on_num_playlists(total_playlists)
+
+    dict_number_to_playlist, counter = show_tracks_and_append_to_dict(playlist_to_show, dict_number_to_playlist,
+                                                                      columns=columns, jumps=jumps, printing=printing)
+    return dict_number_to_playlist
+
+
+
+
 
 def check_playlist_for_specific_track(playlists, track_uri, what_to_compare='uri'):
     for playlist in playlists['items']:
@@ -280,6 +304,11 @@ def add_song_to_queue(spotify_object, id, track_name, artist, following_artist):
         print(Fore.LIGHTRED_EX + str(e) + Fore.WHITE)
         return 0
 
+
+def get_month_name_from_month_number(month_num):
+    month_dict = {"01": "Jan.", "02": "Feb.", "03": "March", "04": "April", "05": "May", "06": "June",
+                  "07": "July", "08": "Aug.", "09": "Sept.", "10": "Oct.", "11": "Nov.", "12": "Dec.",}
+    return month_dict[month_num]
 
 #playlist_uri = 'https://open.spotify.com/playlist/5r5lGanRM2v1RJK1jhsxAJ'
 #song_uri = 'https://open.spotify.com/track/2Mb9K8vDqygdZ7FVWi2IRa'

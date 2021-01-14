@@ -61,19 +61,19 @@ if __name__ == "__main__":
 
 
 def print_feedback_info_modify():
-    space = 3
-    print("\nWhat to modify with the current playback? \nModify: \n"
-                        + Fore.BLUE + " "*space + ' repeat' + Fore.WHITE + ': Set the current device on repeat.\n'
-                        + Fore.LIGHTMAGENTA_EX + " "*space + ' seek' + Fore.WHITE + ': Move to a specific ms in track.\n'
-                        + Fore.LIGHTCYAN_EX + " "*space + ' shuffle' + Fore.WHITE + ': Toggle playback shuffling.\n'
-                        + Fore.YELLOW + " "*space + ' transfer' + Fore.WHITE + ': Change the current active device.\n'
-                        + Fore.LIGHTRED_EX + " "*space + ' volume' + Fore.WHITE + ': Adjust volume. (not finished)\n')
+    space = 0
+    print("What to modify with the current playback? \n\nModify: \n"
+                        + Fore.BLUE + " "*space + 'repeat' + Fore.WHITE + ': Set the current device on repeat.\n'
+                        + Fore.LIGHTMAGENTA_EX + " "*space + 'seek' + Fore.WHITE + ': Move to a specific ms in track.\n'
+                        + Fore.LIGHTCYAN_EX + " "*space + 'shuffle' + Fore.WHITE + ': Toggle playback shuffling.\n'
+                        + Fore.YELLOW + " "*space + 'transfer' + Fore.WHITE + ': Change the current active device.\n'
+                        + Fore.LIGHTRED_EX + " "*space + 'volume' + Fore.WHITE + ': Adjust volume. (not finished)\n')
 
     return legal_attributes
 
 def choices_between_min_max(min, max):
     while True:
-        choice_input = input("Chose desired number between " +str(min) + " and " + str(max) + ": ")
+        choice_input = input("\nChose desired number between " +str(min) + " and " + str(max) + ": ")
         if utl.RepresentsInt(choice_input):
             if int(choice_input) >= min and int(choice_input) <= max:
                 return int(choice_input)
@@ -90,7 +90,7 @@ def choices_true_false(message):
 def print_feedback_info_modify_parameter(modify):
     space = 3
     if modify == "repeat":
-        print("\nChoose between: ")
+        print("Choose between: ")
         repeat_dict = {1: "track", 2: "playlist", 3: "off"}
         print("\n1. 'track' (set track repeat)"
               "\n2. 'playlist' (set the playlist on repeat)" 
@@ -98,14 +98,14 @@ def print_feedback_info_modify_parameter(modify):
         return repeat_dict[choices_between_min_max(1, 3)]
 
     if modify == "seek":
-        print("\nFind position in current track (%). ")
+        print("Find position in current track (%). ")
         return choices_between_min_max(0, 100)
 
     if modify == "shuffle":
         return choices_true_false("Turn on/off shuffle. True/False: ")
 
     if modify == "volume":
-        print("\nAdjust volume to a percentage (%). ")
+        print("Adjust volume to a percentage (%). ")
         return choices_between_min_max(0, 100)
 
     if modify == "transfer":
