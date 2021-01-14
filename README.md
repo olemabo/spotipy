@@ -1,9 +1,9 @@
 # Spotipy project 
-The goal of this project is to provide a terminal based version of spotify, including new features that are not available in the normal spotify app. 
+The goal of this project is to provide a terminal based version of spotify, which includes both features found in the original spotify app and new features. 
 
-This project uses the spotify Web API (https://developer.spotify.com/documentation/web-api/) which is based on simple REST principles, the Spotify Web API endpoints return JSON metadata about music artists, albums, and tracks, directly from the Spotify Data Catalogue.
+This project uses the spotify Web API (https://developer.spotify.com/documentation/web-api/) which is based on simple REST principles, where the Spotify Web API endpoints return JSON metadata about music artists, albums, and tracks, directly from the Spotify Data Catalogue.
 
-Spotipy will also be used, which is the lightweight Python library for the Spotify Web API. With Spotipy you get full access to all of the music data provided by the Spotify platform.
+Spotipy (https://spotipy.readthedocs.io/) will also be used, which is the lightweight Python library for the Spotify Web API. With Spotipy you get full access to all of the music data provided by the Spotify platform.
 
 Before you can use this spotify project, you will have to do the following:
 * You need a Spotify user account (Free or Premium)
@@ -15,7 +15,7 @@ The main focus with this project is to create easy and quick terminal code to ac
 
 The goal is to provide one single python file which provides a terminal interface where different spotify functions are provided. This can be to search for artists, add current songs to queue, modify playback and so on. This will be found in everything.py. As with all the scripts, commenting, grammar skills, puns and coding skills, they will continuously be improved. 
  
-The following modules will also have to be installed: 
+The following python modules will also have to be installed: 
 * spotipy
 * tqdm
 * colorama
