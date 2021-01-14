@@ -1,5 +1,4 @@
 import utility_spotify as utl_sp
-import utility_functions as utl
 import spotipy
 from colorama import Fore
 
@@ -7,7 +6,6 @@ from colorama import Fore
 # This script will add the current played spotify song to a public playlist of your choice
 # TODO: add to a new playlist
 # TODO: must check if the song is already in the list
-
 
 
 def add_current_song_to_playlist2(sp, public=True, private=True, collaborative=True):

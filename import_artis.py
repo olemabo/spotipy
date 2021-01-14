@@ -11,11 +11,6 @@ from spotipy.oauth2 import SpotifyOAuth
 
 
 
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-
-
-
 scope = "user-library-read"
 token = SpotifyOAuth(scope=scope)
 print(token.redirect_uri)

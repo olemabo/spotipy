@@ -6,19 +6,31 @@ import unicodedata
 import json
 
 
-def find_str(s, char):
+def find_str(string, char):
+    """
+    Return index of first occurance of character char in string string
+    :param string: chosen string: "hello"
+    :param char: chosen char: "r"
+    :return: index where char is found in string. -1 if not found.
+    """
     index = 0
-    if char in s:
+    if char in string:
         c = char[0]
-        for ch in s:
+        for ch in string:
             if ch == c:
-                if s[index:index+len(char)] == char:
+                if string[index:index+len(char)] == char:
                     return index
             index += 1
     return -1
 
 
+
 def convert_ISO_time_to_seconds(iso_time_str):
+    """
+    Convert ISO time to corresponding number of seconds
+    :param iso_time_str:
+    :return:
+    """
     parsed_t = dp.parse(iso_time_str)
     t_in_seconds = parsed_t.strftime('%s')
     return t_in_seconds

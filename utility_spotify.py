@@ -3,7 +3,6 @@ from spotipy.oauth2 import SpotifyOAuth
 from colorama import Fore
 import utility_functions as utl
 import os
-import unicodedata
 
 USER_NAME = 'olemabo'
 scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
