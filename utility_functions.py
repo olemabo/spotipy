@@ -151,7 +151,9 @@ def shorten_long_names_count_emojis(info, max_letters=15):
 def clear_terminal():
     # Clears the terminal (bash command "clear")
     # check and make call for specific operating system
-    _ = call('clear' if os.name == 'posix' else 'cls')
+    # _ = call('clear' if os.name == 'posix' else 'cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 
 def convert_song_numbers_to_useful_numbers(string_number, maximum, separators=[':', '-']):
