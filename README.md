@@ -16,9 +16,11 @@ The main focus with this project is to create easy and quick terminal code to ac
 The goal is to provide one single python file which provides a terminal interface where different spotify functions are provided. This can be to search for artists, add current songs to queue, modify playback and so on. This will be found in everything.py. As with all the scripts, commenting, grammar skills, puns and coding skills, they will continuously be improved. 
  
 The following modules will also have to be installed: 
-* tqdm
 * spotipy
-* ...
+* tqdm
+* colorama
+* os, unicodedata, argparse, sys, operator
+* random, time, json
 
 
 The individual scripts are best served with a nice alias :)
