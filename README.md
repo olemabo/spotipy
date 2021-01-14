@@ -1,4 +1,4 @@
-# spotipy
+# Spotipy project 
 Scripts that utilize the spotify Web API. 
 https://developer.spotify.com/documentation/web-apii/
 
