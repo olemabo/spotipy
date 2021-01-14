@@ -46,19 +46,19 @@ def spotify_terminal_interface():
         if user_choice == 0:
             # Put all this in a function
             spotifyObject = sp
-            searchQuery = "coldplay"
-            searchResults = spotifyObject.search(searchQuery, 1, 0, "artist")
-            print(searchResults, searchResults['artists']['items'][0]['id'])
-            print(utl_sp.search_one_type(sp, searchQuery, type='artist', limit=10))
+            #searchQuery = "coldplay"
+            #searchResults = spotifyObject.search(q=searchQuery, limit=1, offset=0, type="artist")
+            #print(searchResults, searchResults['artists']['items'][0]['id'])
+            search_result_NAME_ID_URL = utl_sp.search_one_type(sp, "Search", type='artist', limit=5)
             # Artist details
-            artist = searchResults['artists']['items'][0]
-            print(artist['name'])
-            print(str(artist['followers']['total']) + " followers")
-            print(artist['genres'][0])
-            print()
+            #artist = searchResults['artists']['items'][0]
+            #print(artist['name'])
+            #print(str(artist['followers']['total']) + " followers")
+            #print(artist['genres'][0])
+            #print()
             #webbrowser.open(artist['images'][0]['url'])
-            artistID = artist['id']
-
+            #artistID = artist['id']
+            artistID = search_result_NAME_ID_URL[1]
             # Album and track details
             trackURIs = []
             trackArt = []

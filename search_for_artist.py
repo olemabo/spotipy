@@ -5,6 +5,14 @@ import random
 
 
 def search_for_artist(artist_name, spotify_object, type='artist', limit=1):
+    """
+
+    :param artist_name:
+    :param spotify_object:
+    :param type:
+    :param limit:
+    :return:
+    """
     while True:
         result = spotify_object.search(q=type+':' + artist_name, type=type, limit=limit)['artists']
         # type = album , artist, playlist, track, show and episode

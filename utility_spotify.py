@@ -59,7 +59,7 @@ def search_one_type(sp, search_name, type, limit=3):
             search_dict[idx + 1] = [name, search_id, search_uri]
         choose_search = input("\n1. Chose corresponding number to desired " + str(type) + "."
                             "\n2. Increase number of searches by specifing a larger number than " + str(len(search_dict)) +
-                             ".\n3. Specify a new search. \n4. 'x' to exit:   ")
+                             ".\n3. Specify a new search. \n4. 'x' to exit. \n")
         if utl.RepresentsInt(choose_search) and int(choose_search) > 0 and int(choose_search) <= len(search_dict):
             return search_dict[int(choose_search)]
         if choose_search == 'x':
