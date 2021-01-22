@@ -44,45 +44,7 @@ def spotify_terminal_interface():
         utl.clear_terminal()
 
         if user_choice == 0:
-            # Put all this in a function
-            spotifyObject = sp
-            #searchQuery = "coldplay"
-            #searchResults = spotifyObject.search(q=searchQuery, limit=1, offset=0, type="artist")
-            #print(searchResults, searchResults['artists']['items'][0]['id'])
-            search_result_NAME_ID_URL = utl_sp.search_one_type(sp, "Search", type='artist', limit=5)
-            # Artist details
-            #artist = searchResults['artists']['items'][0]
-            #print(artist['name'])
-            #print(str(artist['followers']['total']) + " followers")
-            #print(artist['genres'][0])
-            #print()
-            #webbrowser.open(artist['images'][0]['url'])
-            #artistID = artist['id']
-            artistID = search_result_NAME_ID_URL[1]
-            # Album and track details
-            trackURIs = []
-            trackArt = []
-            z = 0
-
-            # Extract album data
-            albumResults = spotifyObject.artist_albums(artistID)
-            albumResults = albumResults['items']
-
-            for item in albumResults:
-                print("ALBUM: " + item['name'])
-                albumID = item['id']
-                albumArt = item['images'][0]['url']
-
-                # Extract track data
-                trackResults = spotifyObject.album_tracks(albumID)
-                trackResults = trackResults['items']
-
-                for item in trackResults:
-                    print(str(z) + ": " + item['name'])
-                    trackURIs.append(item['uri'])
-                    trackArt.append(albumArt)
-                    z += 1
-                print()
+            astq.search_for_artist_show_tracks_grouped_by_album_add_queue(sp)
 
         # modify playback
         if user_choice == 1:
@@ -135,7 +97,7 @@ def spotify_terminal_interface():
                     "3. Add random songs from all your playlists \n" \
                     "4. Choose artists you are following. (x) \n" \
                     "5. Search for artists and add songs from related artists. \n" \
-                    "6. Search for artist and chose between his/her songs. (x) \n" \
+                    "6. Search for artist and chose between his/her songs. \n" \
                     "7. Search for artists, songs from these artists only.\n" \
                     "8. Find songs by genre (x) \n"
             add_song_queue_choice = utl.specify_int_in_range(1, 7, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
@@ -207,11 +169,9 @@ def spotify_terminal_interface():
                 crq.add_related_artists_from_searched_artists(sp, number_of_tracks_to_add, random_artist=random_artist, random_track=random_track, include_given_artist=add_chosen_artist)
 
             if int(add_song_queue_choice) == 6:
-                print("Not yet implemented")
-                a = sfa.search_for_one_artist_until_correct(sp)
-                print("Artist info: ", a)
-                print("Remains to find all songs for given artist to chose from")
-
+                artist_info = sfa.search_for_one_artist_until_correct(sp)
+                trackName, trackURIs, artist_name = sfa.show_all_tracks_from_artist_id(artist_info[2], sp, artist_info[3])
+                astq.let_user_specify_which_songs_to_queue(trackURIs, trackName, artist_name, sp)
 
             if int(add_song_queue_choice) == 7:
                 print("7. Search for artists, songs from these artists only.\n")

@@ -294,7 +294,10 @@ def add_song_to_queue(spotify_object, id, track_name, artist, following_artist):
     try:
         print(Fore.LIGHTRED_EX)
         spotify_object.add_to_queue(id)
-        print(Fore.WHITE + str(following_artist) + " -> " + Fore.LIGHTGREEN_EX + str(track_name) + Fore.WHITE + " (" + str(artist) + ")" + " was added to the queue.")
+        if len(track_name)>0 and len(artist)>0 and len(following_artist)>0:
+            print(Fore.WHITE + str(following_artist) + " -> " + Fore.LIGHTGREEN_EX + str(track_name) + Fore.WHITE + " (" + str(artist) + ")" + " was added to the queue.")
+        elif len(track_name)>0 and len(artist)>0:
+            print(Fore.WHITE + "Adding " + Fore.LIGHTGREEN_EX + str(track_name) + Fore.WHITE + " (" + str(artist) + ") to queue. " + Fore.WHITE)
         return 1
     except Exception as e:
         #print(Fore.LIGHTRED_EX + "Player command failed: No active device found. Reason: NO_ACTIVE_DEVICE.")

@@ -5,7 +5,7 @@ from colorama import Fore
 import operator
 import utility_functions as utl
 import utility_spotify as utl_sp
-
+import search_for_artist as search
 
 #  how to use scope variables
 #https://developer.spotify.com/documentation/general/guides/scopes/
@@ -185,7 +185,34 @@ def add_desired_song_to_queue(query, spotify_object, type='track', limit=3):
             return 0
         utl.clear_terminal()
 
+def search_for_artist_show_tracks_grouped_by_album_add_queue(sp):
+    trackName, trackURIs, artist_name = search.search_for_artist_show_tracks_grouped_by_album(sp)
+    response = utl.proceed(message="Do you want to add song to queue?")
+    if response:
+        let_user_specify_which_songs_to_queue(trackURIs, trackName, artist_name, sp)
 
+def let_user_specify_which_songs_to_queue(trackURIList, trackNameList, artist_name, sp):
+    chosen_trakcs = input("\nChoose a track by specifying the corresponding number (x to exit): ")
+    if chosen_trakcs == 'x':
+        return -1
+    nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_trakcs, len(trackURIList))
+
+    while nice_numbers == -1:
+        chosen_playlist = input(
+            "Try again. Choose a track by specifying the corresponding number (x to exit): ")
+        if chosen_playlist == 'x':
+            return -1
+        nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_playlist, len(trackURIList))
+
+    for number in nice_numbers:
+        track_id = trackURIList[number]
+        track_name = trackNameList[number]
+        # track = ['2cEBG31c2Y7mfRlLY8g1ah', 'Pictures', 'Benjamin Francis Leftwich', 'Ben Howard']
+        if utl_sp.add_song_to_queue(sp, track_id, track_name, artist_name, ""):
+            continue
+        else:
+            break
+    print()
 
 if __name__ == "__main__":
 

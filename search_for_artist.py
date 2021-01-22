@@ -54,6 +54,42 @@ def search_for_artist(artist_name, spotify_object, type='artist', limit=1):
             artist_name = chosen_artist
 
 
+def search_for_artist_show_tracks_grouped_by_album(spotifyObject):
+    # Artist details
+    search_result_NAME_ID_URL = utl_sp.search_one_type(spotifyObject, "Search", type='artist', limit=5)
+    artist_id = search_result_NAME_ID_URL[1]
+    artist_name = search_result_NAME_ID_URL[0]
+    return show_all_tracks_from_artist_id(artist_id, spotifyObject, artist_name)
+
+
+def show_all_tracks_from_artist_id(artistID, spotifyObject, artist_name):
+    # Album and track details
+    trackURIs = []
+    trackArt = []
+    trackName = []
+    z = 0
+
+    albumResults = spotifyObject.artist_albums(artistID)
+    albumResults = albumResults['items']
+    print()
+    for item in albumResults:
+        print("ALBUM: " + item['name'])
+        albumID = item['id']
+        albumArt = item['images'][0]['url']
+
+        # Extract track data
+        trackResults = spotifyObject.album_tracks(albumID)
+        trackResults = trackResults['items']
+
+        for item in trackResults:
+            print(str(z) + ": " + item['name'])
+            trackURIs.append(item['uri'])
+            trackArt.append(albumArt)
+            trackName.append(item['name'])
+            z += 1
+        print()
+    print()
+    return trackName, trackURIs, artist_name
 
 def search_for_one_artist_until_correct(spotify_object, search_type="artist", can_choose_current_artist=False):
     info_text = "Search for new artist ('x' = exit"
