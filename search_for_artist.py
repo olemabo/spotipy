@@ -55,9 +55,20 @@ def search_for_artist(artist_name, spotify_object, type='artist', limit=1):
 
 
 
-def search_for_one_artist_until_correct(spotify_object, search_type="artist"):
+def search_for_one_artist_until_correct(spotify_object, search_type="artist", can_choose_current_artist=False):
+    info_text = "Search for new artist ('x' = exit"
+    if can_choose_current_artist:
+        # get current artist
+        track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(spotify_object)
+        print("Current artist: ", artist_name)
+        if track_name != -1:
+            info_text += ", 'c' = search for current artist"
+
     while True:
-        your_artist_name = input("Search for new artist ('x' = exit): ")
+        your_artist_name = input(info_text + "): ")
+        if your_artist_name == 'c':
+            track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(spotify_object)
+            return [0, 0, track_uri, artist_name, 0]
         if your_artist_name == 'x':
             break
         info = search_for_artist(your_artist_name, spotify_object, type=search_type, limit=3)

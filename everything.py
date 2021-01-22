@@ -28,7 +28,7 @@ def spotify_terminal_interface():
 
     while True:
 
-        message =  Fore.LIGHTBLUE_EX + "What do you want to do? \n" + Fore.WHITE + \
+        message = Fore.LIGHTBLUE_EX + "What do you want to do? \n" + Fore.WHITE + \
                   "0 - Search artist\n" \
                   "1 - Modify playback\n" \
                   "2 - Get current playback status \n" \
@@ -87,12 +87,16 @@ def spotify_terminal_interface():
         # modify playback
         if user_choice == 1:
             legal_values = modi.print_feedback_info_modify()
-            modify_mod = input("Modify: ")
+            modify_mod = input("Modify ('x' = exit): ")
+            if modify_mod == 'x':
+                utl.clear_terminal()
+                continue
             if modify_mod not in legal_values:
                 utl.clear_terminal()
                 user_choice = 1
                 skip_choice = True
                 continue
+
 
             modify_para = modi.print_feedback_info_modify_parameter(modify_mod)
             modi.modify_spotify(modify_mod, modify_para)
@@ -103,9 +107,14 @@ def spotify_terminal_interface():
         if user_choice == 2:
             utl.clear_terminal()
             gcps.get_current_playback_status(sp)
-            if utl.proceed(message="Do you want to modify playback?"):
+            response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
+            if response == 'y':
                 user_choice = 1
                 skip_choice = True
+            if response == 'r':
+                user_choice = 2
+                skip_choice = True
+
 
 
         if user_choice == 3:
@@ -226,7 +235,6 @@ def spotify_terminal_interface():
 
         if user_choice == 5:
             fooc.first_occurance(sp)
-            print()
             print()
 
         if user_choice == 6:

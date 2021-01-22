@@ -111,9 +111,19 @@ def proceed(message="Do you want to continue?"):
         still_do_things = input("Wrong input. " + message + " y/n: ")
     if still_do_things == 'y':
         return True
-
     else:
         return False
+
+def proceed_or_refresh(message="Do you want to continue (r = refresh) ?"):
+    """
+    Ask the user if he or she will proceed with something.
+    :param message: Info about what the user could proceed with (Do you want to modify playbeack)
+    :return: True / False (want to proceed / dont want to proceed)
+    """
+    still_do_things = input(message + " y/n/r: ")
+    while still_do_things not in ['y', 'n', 'r']:
+        still_do_things = input("Wrong input. " + message + " y/n: ")
+    return still_do_things
 
 
 def convert_list_string_to_sentence(list):

@@ -150,7 +150,6 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
             name, num_emojier = utl.shorten_long_names_count_emojis(info, max_letters=15)
             tot_emoji += num_emojier
             print_str, print_color = color_names(print_str, info, number, name)
-
             print_str += " "*(jumps*(column+1) - len(print_str) - tot_emoji)
             dict_number_to_playlist[number] = [info['name'], info['id'], info['uri'], print_color]
         if printing:
@@ -223,7 +222,7 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
     playlist_to_show = select_playlists(sp, data, public, private, collaborative)
 
     print("\n" + Fore.LIGHTRED_EX + "*" + Fore.WHITE +
-          ": These playlists are not made by you. You therefore not add songs to these\n"
+          ": These playlists are not made by you. You can therefore not add songs to these\n"
           + Fore.YELLOW + "*" + Fore.WHITE + ": These playlists are collaborative. You are free to add.\n"
           + Fore.CYAN + "*" + Fore.WHITE + ": Private playlists.")
     print("\nMy playlists: " + Fore.WHITE)

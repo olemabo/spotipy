@@ -29,3 +29,5 @@
 
 # add x amount of songs to queue. based on favorite artists, chosen artists, followed artists,
 related artists to floowed rtists, artist top tracks
+
+# In find first occurance, also have the possibility to choose the artist you are listing to now. 

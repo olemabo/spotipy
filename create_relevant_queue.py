@@ -319,6 +319,7 @@ def return_all_songs_in_playlist(sp, playlist_uri):
     for track_json in playlist_info:
         track_uri = track_json['track']['uri']
         track_name = track_json['track']['name']
+        # print(track_json['track']['album']['artists'])
         track_artist = track_json['track']['album']['artists'][0]['name']
         nice_format.append([track_uri, track_name, track_artist])
     return nice_format

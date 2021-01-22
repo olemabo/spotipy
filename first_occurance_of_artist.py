@@ -48,11 +48,12 @@ def find_artist(sp):
 
 
 def first_occurance(sp):
-    print(Fore.LIGHTBLUE_EX + "\nYYou can now specify an artists and find out when he/she first occurred in your playlists.\n" +Fore.WHITE)
-    artist_id, artist_name = search.search_for_one_artist_until_correct(sp)[2:4]
+    print(Fore.LIGHTBLUE_EX + "You can now specify an artists and find out when he/she first occurred in your playlists.\n" +Fore.WHITE)
+    artist_id, artist_name = search.search_for_one_artist_until_correct(sp, can_choose_current_artist=True)[2:4]
     my_playlists = sp.current_user_playlists()
     all_playlists = utl_sp.select_playlists(sp, my_playlists, remove_spotify_playlist=True)
     all_occurrence_in_seconds = []
+    print("\nSearching for first occurance of: ", artist_name)
     print("Start to go through " + str(len(all_playlists)) + " playlists... ")
     for i in tqdm(range(len(all_playlists))):
         playlist_uri = all_playlists[i]['uri']
@@ -63,6 +64,7 @@ def first_occurance(sp):
             all_occurrence_in_seconds.append(artist_occurance)
     if len(all_occurrence_in_seconds) == 0:
         print("\nYou don't have a single song from this artist in your playlists.")
+        return 0
 
     first_occ_in_seconds = all_occurrence_in_seconds[0][0]
     first_occ_in_seconds.append(all_occurrence_in_seconds[0][-1])
