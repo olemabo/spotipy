@@ -104,7 +104,8 @@ def search_for_one_artist_until_correct(spotify_object, search_type="artist", ca
         your_artist_name = input(info_text + "): ")
         if your_artist_name == 'c':
             track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(spotify_object)
-            return [0, 0, track_uri, artist_name, 0]
+            artist_id = utl_sp.get_artist_id_from_track_id(spotify_object, track_uri)
+            return [0, 0, artist_id, artist_name, 0]
         if your_artist_name == 'x':
             break
         info = search_for_artist(your_artist_name, spotify_object, type=search_type, limit=3)

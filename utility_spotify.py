@@ -100,6 +100,9 @@ def find_current_song_return_id(sp):
     playing_type = data['currently_playing_type']  # track, ...
     return track_name, artist_name, track_uri, playing_type
 
+def get_artist_id_from_track_id(spotify_object, track_uri):
+    track_info = spotify_object.track(track_uri)
+    return track_info['album']['artists'][0]['id']
 
 def color_names(print_str, info, number, name):
     owner = info['owner']['display_name']
