@@ -50,6 +50,7 @@ def spotify_terminal_interface():
         if user_choice == 1:
             legal_values = modi.print_feedback_info_modify()
             modify_mod = input("Modify ('x' = exit): ")
+            skip_choice = False
             if modify_mod == 'x':
                 utl.clear_terminal()
                 continue
@@ -70,6 +71,7 @@ def spotify_terminal_interface():
             utl.clear_terminal()
             gcps.get_current_playback_status(sp)
             response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
+            skip_choice = False
             if response == 'y':
                 user_choice = 1
                 skip_choice = True
