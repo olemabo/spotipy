@@ -96,7 +96,7 @@ def search_for_one_artist_until_correct(spotify_object, search_type="artist", ca
     if can_choose_current_artist:
         # get current artist
         track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(spotify_object)
-        print("Current artist: ", artist_name)
+        print("Current artist: " + Fore.CYAN + artist_name + Fore.WHITE)
         if track_name != -1:
             info_text += ", 'c' = search for current artist"
 

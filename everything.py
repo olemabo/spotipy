@@ -10,7 +10,7 @@ import create_relevant_queue as crq
 import search_for_artist as sfa
 import add_song_to_queue as astq
 import first_occurance_of_artist as fooc
-
+import recommendation as reco
 
 def spotify_terminal_interface():
     scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
@@ -34,8 +34,8 @@ def spotify_terminal_interface():
                   "2 - Get current playback status \n" \
                   "3 - Add current song to playlist\n" \
                   "4 - Add songs to queue\n" \
-                  "5 - Find first occurrence of an artist in your playlists "
-
+                  "5 - Find first occurrence of an artist in your playlists\n" \
+                  "6 - Playlist features\n"
         number_of_options = utl.find_largest_number_in_string(message)
 
         if not skip_choice:
@@ -94,27 +94,30 @@ def spotify_terminal_interface():
         if user_choice == 4:
             utl.clear_terminal()
             queue_message = Fore.LIGHTBLUE_EX + "How do you want to add songs to queue?\n\n" + Fore.WHITE + \
-                    "1. Search for song and add to queue (x)\n" \
+                    "1. Search for song and add to queue \n" \
                     "2. Add random songs based on related artists to the artists you are following\n" \
                     "3. Add random songs from all your playlists \n" \
                     "4. Choose artists you are following. (x) \n" \
                     "5. Search for artists and add songs from related artists. \n" \
-                    "6. Search for artist and chose between his/her songs. \n" \
+                    "6. Search for artist and choose between his/her songs. \n" \
                     "7. Search for artists, songs from these artists only.\n" \
-                    "8. Find songs by genre (x) \n"
-            add_song_queue_choice = utl.specify_int_in_range(1, 7, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
+                    "8. Find songs by genre (x) \n" \
+                    "9. Add songs based on tracks, artists and/or genre. \n"
+            add_song_queue_choice = utl.specify_int_in_range(1, 9, message=queue_message + "\nChoose the number corresponding to what you want to do.", error='x')
 
             utl.clear_terminal()
 
             if int(add_song_queue_choice) == 1:
-                print("Not yet implemented")
-                #a = utl_sp.search_one_type(sp, "Dawn", "track", limit=3)
-                #print(a)
+                track_search = input("Track search: ")
+                print()
+                track_info = utl_sp.search_one_type(sp, track_search, "track", limit=3)
+                # track_info [name, id, uri]
+                artist_name = utl_sp.get_artist_name_from_track_id(sp, track_info[1])
+                utl_sp.add_song_to_queue(sp, track_info[1], track_info[0], artist_name, "")
+                print()
                 # may use this function. Can search for artist, album and track.
                 # you should make a smart way to let the user specify what to search for.
-                a = astq.add_desired_song_to_queue("artist:cold", sp, type='track', limit=3)
-                print(a)
-                b = 0
+                # astq.add_desired_song_to_queue("artist:" + track_search, sp, type='track', limit=3)
 
             if int(add_song_queue_choice) == 2:
                 print("You will add random songs based on artists relevant to the artists you are following.\n")
@@ -193,6 +196,13 @@ def spotify_terminal_interface():
                 crq.add_random_songs_from_searched_artists(artists=artists, spotify_object=utl_sp.create_spotify_object(),
                                                            number_of_songs_to_add=number_of_tracks_to_add, top_all=top_all)
 
+                print()
+
+            if int(add_song_queue_choice) == 8:
+                print("Not implemented. ")
+
+            if int(add_song_queue_choice) == 9:
+                reco.add_recommendation_seeds_to_queue(sp=sp)
                 print()
 
         if user_choice == 5:

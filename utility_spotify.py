@@ -23,7 +23,7 @@ def create_spotify_object_non_auth(username=USER_NAME):
 
 
 
-def search_one_type(sp, search_name, type, limit=3):
+def search_one_type(sp, search_name, type, limit=3, line_adjustment=28):
     """
 
     :param sp: spotify object. Scope must include 'user-read-private'
@@ -38,14 +38,14 @@ def search_one_type(sp, search_name, type, limit=3):
         extra_type_info = {'artist': ['genres', 0], 'album': ['artists', 0, 'name'],
                            'track': ['artists', 0, 'name'], 'playlist': ['owner', 'display_name'],
                            'show': ['publisher'], 'episode': ['description']}
-        line_adjustment = 28
-        print("Number \t " + type.capitalize() + " "*(line_adjustment-len(type.capitalize())) + str(extra_type_info[type][0]).capitalize())
+        print(Fore.LIGHTBLUE_EX + "Number \t " + Fore.YELLOW + type.capitalize() + Fore.WHITE + " "*(line_adjustment-len(type.capitalize())) + Fore.LIGHTMAGENTA_EX + str(extra_type_info[type][0]).capitalize() + Fore.WHITE)
+
         search_dict = dict()
         for idx, item in enumerate(search_result['items']):
             search_uri = item['uri']
             search_id = item['id']
 
-            name, emoji_len_count = utl.shorten_long_names_count_emojis(item, max_letters=line_adjustment-3)
+            name, emoji_len_count = utl.shorten_long_names_count_emojis(item['name'], max_letters=line_adjustment-3)
 
             extra_info = item
             for i in extra_type_info[type]:
@@ -56,8 +56,8 @@ def search_one_type(sp, search_name, type, limit=3):
                     extra_info = extra_info[i]
 
             print(str(idx+1) + " \t " + str(name) + " "*(line_adjustment-len(name) - emoji_len_count) + extra_info)
-            search_dict[idx + 1] = [name, search_id, search_uri]
-        choose_search = input("\n1. Chose corresponding number to desired " + str(type) + "."
+            search_dict[idx + 1] = [name, search_id, search_uri, item['name']]
+        choose_search = input("\n1. Choose corresponding number to desired " + str(type) + "."
                             "\n2. Increase number of searches by specifing a larger number than " + str(len(search_dict)) +
                              ".\n3. Specify a new search. \n4. 'x' to exit. \n")
         if utl.RepresentsInt(choose_search) and int(choose_search) > 0 and int(choose_search) <= len(search_dict):
@@ -104,6 +104,11 @@ def get_artist_id_from_track_id(spotify_object, track_uri):
     track_info = spotify_object.track(track_uri)
     return track_info['album']['artists'][0]['id']
 
+def get_artist_name_from_track_id(spotify_object, track_uri):
+    track_info = spotify_object.track(track_uri)
+    return track_info['album']['artists'][0]['name']
+
+
 def color_names(print_str, info, number, name):
     owner = info['owner']['display_name']
     collab = info['collaborative']
@@ -126,7 +131,48 @@ def color_names(print_str, info, number, name):
     return print_str, return_color
 
 
+def show_info_and_append_to_dict(data, start_count=0, columns=3, jumps=28, printing=True):
+    """
+    :param data:
+    :param dict_number_to_playlist:
+    :param start_count:
+    :param columns:
+    :param jumps:
+    """
+    num_playlists = len(data)
+    odd = len(data) % columns
+    dict_number_to_playlist = {}
+    for idx in range(num_playlists//columns):
+        print_str = ""
+        tot_emoji = 0
+        for column in range(columns):
+            info = data[idx * columns + column]
+            number = idx * columns + column + 1 + start_count
 
+            name, num_emojier = utl.shorten_long_names_count_emojis(info, max_letters=15)
+            tot_emoji += num_emojier
+            print_str += str(number) + ": " + name + " "
+            print_str += " "*(jumps*(column+1) - len(print_str) - tot_emoji)
+            dict_number_to_playlist[number] = info
+        if printing:
+            print(print_str)
+
+    if odd > 0:
+        last_str = ""
+        for idx, num in enumerate(range(num_playlists - odd, num_playlists)):
+            info = data[num]
+            number = num + 1 + start_count
+
+            name, num_emojier = utl.shorten_long_names_count_emojis(info, max_letters=15)
+
+            last_str += str(number) + ": " + name
+
+            last_str += " " * (jumps*(idx+1) - len(last_str))
+            dict_number_to_playlist[number] = info
+        if printing:
+            print(last_str)
+
+    return dict_number_to_playlist, number
 
 
 def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0, columns=3, jumps=28, printing=True):
@@ -150,7 +196,7 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
             info = data[idx * columns + column]
             number = idx * columns + column + 1 + start_count
 
-            name, num_emojier = utl.shorten_long_names_count_emojis(info, max_letters=15)
+            name, num_emojier = utl.shorten_long_names_count_emojis(info['name'], max_letters=15)
             tot_emoji += num_emojier
             print_str, print_color = color_names(print_str, info, number, name)
             print_str += " "*(jumps*(column+1) - len(print_str) - tot_emoji)
@@ -164,7 +210,7 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
             info = data[num]
             number = num + 1 + start_count
 
-            name, num_emojier = utl.shorten_long_names_count_emojis(info, max_letters=15)
+            name, num_emojier = utl.shorten_long_names_count_emojis(info['name'], max_letters=15)
 
             last_str, print_color = color_names(last_str, info, number, name)
 
@@ -237,16 +283,7 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
     dict_number_to_playlist, counter = show_tracks_and_append_to_dict(playlist_to_show, dict_number_to_playlist,
                                                                       columns=columns, jumps=jumps)
 
-    chosen_playlist = input("\nChoose a playlist by specifying the corresponding number (x to exit): ")
-    if chosen_playlist == 'x':
-        return -1
-    nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_playlist, total_playlists)
-
-    while nice_numbers == -1:
-        chosen_playlist = input("Try again. Choose a playlist by specifying the corresponding number (x to exit): ")
-        if chosen_playlist == 'x':
-            return -1
-        nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_playlist, total_playlists)
+    nice_numbers = specify_number_in_range_from_list(dict_number_to_playlist, what_to_choose_from="playlist")
 
     return_playlist = []
     print("\nYour choice(s): ")
@@ -254,6 +291,21 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
         return_playlist.append(dict_number_to_playlist[int(num)])
         print("Playlist name: " + return_playlist[idx][-1] + str(return_playlist[idx][0]) + Fore.WHITE)
     return return_playlist
+
+
+def specify_number_in_range_from_list(dict, what_to_choose_from="playlist"):
+    chosen_playlist = input("\nChoose a " + what_to_choose_from + " by specifying the corresponding number (x to exit): ")
+    if chosen_playlist == 'x':
+        return -1
+    nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_playlist, len(dict))
+
+    while nice_numbers == -1:
+        chosen_playlist = input("Try again. Choose a " + what_to_choose_from + "by specifying the corresponding number (x to exit): ")
+        if chosen_playlist == 'x':
+            return -1
+        nice_numbers = utl.convert_song_numbers_to_useful_numbers(chosen_playlist, len(dict))
+
+    return nice_numbers
 
 
 def return_all_playlists(sp, public=True, private=True, collaborative=True, printing=False):
@@ -313,6 +365,8 @@ def get_month_name_from_month_number(month_num):
     month_dict = {"01": "Jan.", "02": "Feb.", "03": "March", "04": "April", "05": "May", "06": "June",
                   "07": "July", "08": "Aug.", "09": "Sept.", "10": "Oct.", "11": "Nov.", "12": "Dec.",}
     return month_dict[month_num]
+
+
 
 #playlist_uri = 'https://open.spotify.com/playlist/5r5lGanRM2v1RJK1jhsxAJ'
 #song_uri = 'https://open.spotify.com/track/2Mb9K8vDqygdZ7FVWi2IRa'

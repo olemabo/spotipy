@@ -49,7 +49,10 @@ def find_artist(sp):
 
 def first_occurance(sp):
     print(Fore.LIGHTBLUE_EX + "You can now specify an artists and find out when he/she first occurred in your playlists.\n" +Fore.WHITE)
-    artist_id, artist_name = search.search_for_one_artist_until_correct(sp, can_choose_current_artist=True)[2:4]
+    try:
+        artist_id, artist_name = search.search_for_one_artist_until_correct(sp, can_choose_current_artist=True)[2:4]
+    except:
+        return 0
     my_playlists = sp.current_user_playlists()
     all_playlists = utl_sp.select_playlists(sp, my_playlists, remove_spotify_playlist=True)
     all_occurrence_in_seconds = []
@@ -81,7 +84,7 @@ def first_occurance(sp):
     month = utl_sp.get_month_name_from_month_number(timesplit[0].split("-")[1])
     day = timesplit[0].split("-")[2]
     date = day + ". " + month + " " + year
-    print("\nYour first song by " + Fore.LIGHTBLUE_EX + str(artist_name).capitalize() + Fore.WHITE + ""
+    print("\n\nYour first song by " + Fore.LIGHTBLUE_EX + str(artist_name).capitalize() + Fore.WHITE + ""
         "\nAdded " + Fore.LIGHTGREEN_EX + str(date) + Fore.WHITE + " at " + timesplit[1][:-1])
     print("Song name: " + Fore.CYAN + str(first_occ_in_seconds[2]) + Fore.WHITE +
           "\nIn playlist: " + Fore.YELLOW + str(first_occ_in_seconds[-1]) + Fore.WHITE)

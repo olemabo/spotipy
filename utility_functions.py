@@ -74,7 +74,7 @@ def specify_int_in_range(min, max, message="Your choice ", error=""):
     :return: -1 if user specifies error, an int in the range between min and max otherwise.
     """
     temp_message = message
-    temp_message += "\n\nYour choice"
+    temp_message += "\nYour choice"
     if len(error) > 0:
         temp_message += " ('" + str(error) + "' to exit)"
 
@@ -88,9 +88,9 @@ def specify_int_in_range(min, max, message="Your choice ", error=""):
         if RepresentsInt(search_res):
             if int(search_res) >= min and int(search_res) <= max:
                 return int(search_res)
-            temp_message += Fore.LIGHTRED_EX + "\nValue out of range. Must be between " + str(min) + " and " + str(max) + ". Try again.\n" + Fore.WHITE
+            temp_message += Fore.LIGHTRED_EX + "Value out of range. Must be between " + str(min) + " and " + str(max) + ". Try again.\n" + Fore.WHITE
         else:
-            temp_message += Fore.LIGHTRED_EX + "\nMust be integer. Try again.\n" + Fore.WHITE
+            temp_message += Fore.LIGHTRED_EX + "Must be integer. Try again.\n" + Fore.WHITE
 
         temp_message += "\nYour choice"
         if len(error) > 0:
@@ -126,7 +126,7 @@ def proceed_or_refresh(message="Do you want to continue (r = refresh) ?"):
     return still_do_things
 
 
-def convert_list_string_to_sentence(list):
+def convert_list_string_to_sentence(lists):
     """
     Put together a list of string to one single string (sentence) where the last
     two elements get "and" between them.
@@ -134,10 +134,13 @@ def convert_list_string_to_sentence(list):
     :param list:
     :return:
     """
-    list[0] = list[0].capitalize()
-    list.insert(len(list)-1, "and " + list[-1])
-    list.remove(list[-1])
-    return ', '.join(list)
+    if len(lists) == 1:
+        return str(lists[0].capitalize())
+    temp_list = lists
+    temp_list[0] = temp_list[0].capitalize()
+    temp_list.insert(len(temp_list)-1, "and " + temp_list[-1])
+    temp_list.remove(temp_list[-1])
+    return ', '.join(temp_list)
 
 
 def convertMillis(millis):
@@ -159,7 +162,7 @@ def shorten_long_names_count_emojis(info, max_letters=15):
     :param max_letters: max number of letters of the info string to be returned
     :return: new short string, number of spaces the emojie(s) takes.
     """
-    name = str(info['name'])
+    name = info
     if len(name) > max_letters:
         name = name[:max_letters]
 

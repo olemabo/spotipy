@@ -73,7 +73,7 @@ def print_feedback_info_modify():
 
 def choices_between_min_max(min, max):
     while True:
-        choice_input = input("\nChose desired number between " +str(min) + " and " + str(max) + ": ")
+        choice_input = input("\nChoose desired number between " +str(min) + " and " + str(max) + ": ")
         if utl.RepresentsInt(choice_input):
             if int(choice_input) >= min and int(choice_input) <= max:
                 return int(choice_input)

@@ -87,8 +87,8 @@ def search_for_track(query, spotify_object, type='track', limit=3):
         popularity = info['popularity']
         artist = info['artists'][0]['name']
 
-        song_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info, max_letters=(N_2-5))
-        album_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info['album'], max_letters=25)
+        song_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info['name'], max_letters=(N_2-5))
+        album_name, emoji_len_count = utl.shorten_long_names_count_emojis(info=info['album']['name'], max_letters=25)
         second_n = N_2 - len(str(song_name))
         first_n = N_1 - len(str(count+1)) + 1
         print(str(count+1) + ":" + " "*first_n + "    " + str(song_name) + " "*second_n + str(artist) + " / "
