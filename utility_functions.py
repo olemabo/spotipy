@@ -61,6 +61,18 @@ def RepresentsFloat(s):
     except ValueError:
         return False
 
+def RepresentsString(s):
+    """
+        Check whether a given input is a float or not (True/false)
+        :param s: input to check
+        :return: True/False (float / something else)
+        """
+    try:
+        str(s)
+        return True
+    except ValueError:
+        return False
+
 
 def specify_int_in_range(min, max, message="Your choice ", error=""):
     """
@@ -295,9 +307,16 @@ def find_largest_number_in_string(message):
     :param message: message-string ("1. first case \n 2. Second case
     :return: largest number in string, -1 otherwise
     """
+    # colorama color represented as string contains number values which should not
+    # be checked in this function. Use this flag to avoid checking colorama colors.
+    dontCheckTheseLetters = 0
     max_num = -1
-    for letter in message:
-        if RepresentsInt(letter):
+    for idx, letter in enumerate(message):
+        if letter == "[" and message[idx+3] == "m":
+            dontCheckTheseLetters = 3
+        if RepresentsInt(letter) and dontCheckTheseLetters == 0:
             if int(letter) > max_num:
                 max_num = int(letter)
+        if dontCheckTheseLetters > 0:
+            dontCheckTheseLetters -= 1
     return max_num

@@ -57,10 +57,14 @@ def search_for_artist(artist_name, spotify_object, type='artist', limit=1):
 def search_for_artist_show_tracks_grouped_by_album(spotifyObject):
     # Artist details
     start_input = input("Artist search: ")
+    utl.clear_terminal()
     search_result_NAME_ID_URL = utl_sp.search_one_type(spotifyObject, start_input, type='artist', limit=5)
+    if search_result_NAME_ID_URL == -1:
+        return -1, -1, -1
     artist_id = search_result_NAME_ID_URL[1]
     artist_name = search_result_NAME_ID_URL[0]
     return show_all_tracks_from_artist_id(artist_id, spotifyObject, artist_name)
+
 
 
 def show_all_tracks_from_artist_id(artistID, spotifyObject, artist_name):

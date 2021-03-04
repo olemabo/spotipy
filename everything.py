@@ -29,13 +29,14 @@ def spotify_terminal_interface():
     while True:
 
         message = Fore.LIGHTBLUE_EX + "What do you want to do? \n" + Fore.WHITE + \
-                  "0 - Search artist\n" \
+                  "0 - Get current playback status\n" \
                   "1 - Modify playback\n" \
-                  "2 - Get current playback status \n" \
+                  "2 - Search artist/track/album \n" \
                   "3 - Add current song to playlist\n" \
                   "4 - Add songs to queue\n" \
                   "5 - Find first occurrence of an artist in your playlists\n" \
                   "6 - Playlist features\n"
+
         number_of_options = utl.find_largest_number_in_string(message)
 
         if not skip_choice:
@@ -43,8 +44,21 @@ def spotify_terminal_interface():
 
         utl.clear_terminal()
 
+
+
         if user_choice == 0:
-            astq.search_for_artist_show_tracks_grouped_by_album_add_queue(sp)
+            utl.clear_terminal()
+            gcps.get_current_playback_status(sp)
+            response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
+            skip_choice = False
+            if response == 'y':
+                user_choice = 1
+                skip_choice = True
+            if response == 'r':
+                user_choice = 0
+                skip_choice = True
+
+
 
         # modify playback
         if user_choice == 1:
@@ -65,26 +79,35 @@ def spotify_terminal_interface():
             modi.modify_spotify(modify_mod, modify_para)
             skip_choice = False
 
-
-
+        # search for artist
         if user_choice == 2:
+
+            message_search = Fore.LIGHTBLUE_EX + "What do you want to do? \n" + Fore.WHITE + \
+                      "0 - Search Artist \n" \
+                      "1 - Search Track \n" \
+                      "2 - Search Album \n"
+
+            number_of_options_search = utl.find_largest_number_in_string(message_search)
+
+            user_choice_search = utl.specify_int_in_range(0, number_of_options_search, message=message_search, error='x')
+
             utl.clear_terminal()
-            gcps.get_current_playback_status(sp)
-            response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
-            skip_choice = False
-            if response == 'y':
-                user_choice = 1
-                skip_choice = True
-            if response == 'r':
-                user_choice = 2
-                skip_choice = True
 
+            if user_choice_search == 0:
+                astq.search_for_artist_show_tracks_grouped_by_album_add_queue(sp)
 
+            if user_choice_search == 1:
+                print("Not implemented yet")
+
+            if user_choice_search == 2:
+                print("Not implemented yet")
 
         if user_choice == 3:
             output_log = add_cur_song.add_current_song_to_playlist2(sp=sp, public=True, private=True, collaborative=True)
             utl.clear_terminal()
-            if len(output_log) > 0:
+            if utl.RepresentsString(output_log):
+                print(output_log + "\n")
+            elif len(output_log) > 0:
                 for i in output_log:
                     print(Fore.BLUE + i.split("was")[0] + Fore.WHITE + i.split("was")[1])
                 print()
@@ -109,15 +132,17 @@ def spotify_terminal_interface():
 
             if int(add_song_queue_choice) == 1:
                 track_search = input("Track search: ")
-                print()
+                utl.clear_terminal()
                 track_info = utl_sp.search_one_type(sp, track_search, "track", limit=3)
-                # track_info [name, id, uri]
-                artist_name = utl_sp.get_artist_name_from_track_id(sp, track_info[1])
-                utl_sp.add_song_to_queue(sp, track_info[1], track_info[0], artist_name, "")
+                # -1 comes when user says 'x' to quit
+                if track_info != -1:
+                    # track_info [name, id, uri]
+                    artist_name = utl_sp.get_artist_name_from_track_id(sp, track_info[1])
+                    utl_sp.add_song_to_queue(sp, track_info[1], track_info[0], artist_name, "")
+                    # may use this function. Can search for artist, album and track.
+                    # you should make a smart way to let the user specify what to search for.
+                    # astq.add_desired_song_to_queue("artist:" + track_search, sp, type='track', limit=3)
                 print()
-                # may use this function. Can search for artist, album and track.
-                # you should make a smart way to let the user specify what to search for.
-                # astq.add_desired_song_to_queue("artist:" + track_search, sp, type='track', limit=3)
 
             if int(add_song_queue_choice) == 2:
                 print("You will add random songs based on artists relevant to the artists you are following.\n")
@@ -185,15 +210,15 @@ def spotify_terminal_interface():
                 artists = crq.search_for_artists(sp)
 
                 number_of_tracks_to_add = utl.specify_int_in_range(1, 50,
-                                                                   Fore.LIGHTBLUE_EX + "\nChoose number of tracks to add to queue (1-50). " + Fore.WHITE)
+                        Fore.LIGHTBLUE_EX + "\nChoose number of tracks to add to queue (1-50). \n" + Fore.WHITE)
 
                 track_dict = {1: "top", 2: "all"}
-                message_artist = Fore.LIGHTBLUE_EX + "\nHow would you pick songs from your chosen artits?\n\n" + Fore.WHITE + \
+                message_artist = Fore.LIGHTBLUE_EX + "\nHow would you pick songs from your chosen artists?\n" + Fore.WHITE + \
                                  "1. Randomly pick among top 10 songs. \n" \
-                                 "2. Randomly pick among all of the artists' songs."
+                                 "2. Randomly pick among all of the artists' songs.\n"
 
                 top_all = track_dict[utl.specify_int_in_range(1, 2, message_artist)]
-                crq.add_random_songs_from_searched_artists(artists=artists, spotify_object=utl_sp.create_spotify_object(),
+                crq.add_random_songs_from_searched_artists(artists=artists, spotify_object=sp,
                                                            number_of_songs_to_add=number_of_tracks_to_add, top_all=top_all)
 
                 print()
@@ -220,7 +245,7 @@ def spotify_terminal_interface():
             break
 
         if skip_choice == False:
-            if  utl.proceed():
+            if utl.proceed():
                 utl.clear_terminal()
             else:
                 break

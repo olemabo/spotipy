@@ -278,7 +278,6 @@ def add_random_songs_from_searched_artists(artists, spotify_object, number_of_so
     random.shuffle(tracks_to_add)
 
     for track in tracks_to_add:
-        print(track)
         # track = ['2cEBG31c2Y7mfRlLY8g1ah', 'Pictures', 'Benjamin Francis Leftwich', 'Ben Howard']
         if utl_sp.add_song_to_queue(spotify_object, track[0], track[1], track[2], track[3]):
             continue

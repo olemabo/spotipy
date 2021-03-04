@@ -11,13 +11,13 @@ from colorama import Fore
 def add_current_song_to_playlist2(sp, public=True, private=True, collaborative=True):
     track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(sp)
     if track_name == -1:
-        return 0
+        return "No active device found."
     print(str(playing_type).capitalize() + " name: " + Fore.LIGHTBLUE_EX + str(track_name) + Fore.WHITE)
     print("Artist name: ", artist_name)
     print("You will now have to choose which playlists to add the song to.")
     playlists = utl_sp.see_my_public_playlists(sp, public, private, collaborative)
     if playlists == -1:
-        return -1
+        return "No public playlist found."
 
     while True:
         still_want_to_add = input("\nDo you still want to add the song to these playlists? (y/n): ")

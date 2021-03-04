@@ -29,7 +29,12 @@ def return_x_recommendations_based_on_input_seed(sp, seed_artists=None, seed_gen
         if genre_seed not in legal_recommendations:
             raise ValueError("Illegal genre seed")
 
-    recommendations = sp.recommendations(seed_artists=seed_artists, seed_genres=seed_genres, seed_tracks=seed_tracks, limit=limit, country=country)
+    try:
+        recommendations = sp.recommendations(seed_artists=seed_artists, seed_genres=seed_genres, seed_tracks=seed_tracks, limit=limit, country=country)
+    except Exception:
+        print("Found no results based on your search / other error")
+        return -1
+
     track_information_list_json = recommendations['tracks']
 
     recommendation_list_to_return = []
@@ -91,6 +96,10 @@ def let_user_search_for_recommendation_seed(sp):
               "3: Add genre seed\n" \
               "4: Finish searching\n"
         option = utl.specify_int_in_range(1, 4, message=message, error='x')
+
+        if option == -1:
+            return None, None, None
+
         if option == 1:
             utl.clear_terminal()
             print("Search for tracks to add to the feed.\n")
@@ -119,11 +128,8 @@ def let_user_search_for_recommendation_seed(sp):
         if option == 4:
             for idx, genre in enumerate(chosen_genres):
                 chosen_genres[idx] = genre.lower()
-            print()
             break
 
-        if option == -1:
-            return None, None, None
         utl.clear_terminal()
     return chosen_tracks_id, chosen_genres, chosen_artists_id
 
@@ -138,11 +144,14 @@ def recommendation_function(sp):
 
     """
     chosen_tracks_id, chosen_genres, chosen_artists_id = let_user_search_for_recommendation_seed(sp)
+    if chosen_tracks_id == None:
+        return -1
     if len(chosen_tracks_id) > 0 or len(chosen_genres) > 0 or len(chosen_artists_id) > 0:
         limit = utl.specify_int_in_range(1, 100, message="How many tracks do you want to generate (1-100)? ")
         recommendations = return_x_recommendations_based_on_input_seed(sp, seed_artists=chosen_artists_id, seed_genres=chosen_genres, seed_tracks=chosen_tracks_id, limit=limit, country=None)
         return recommendations
     else:
+        print(Fore.LIGHTRED_EX + "\nNo input data specified." + Fore.WHITE)
         return -1
 
 def search_for_artists(sp):
@@ -184,6 +193,8 @@ def search_for_genre(sp, show_choosen_genres=True, legal_recommendations=0):
 
 def add_recommendation_seeds_to_queue(sp):
     recommendations = recommendation_function(sp)
+    if recommendations == -1:
+        return 0
     for recommendation in recommendations:
         track_id = recommendation[1]
         track_name = recommendation[0]

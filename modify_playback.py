@@ -135,7 +135,7 @@ def set_repeat(state="track"):
         if state == "off":
             print("Repeat: OFF")
         else:
-            print("\n" +str(state.capitalize()) + " repeat: ON")
+            print("\n" + str(state.capitalize()) + " repeat: ON")
         track_name, artist_name, track_uri, playing_type = utl_sp.find_current_song_return_id(sp=sp)
         print("Currently playing: '" + str(track_name) + "' by " + str(artist_name) + "\n")
     except spotipy.exceptions.SpotifyException:

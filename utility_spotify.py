@@ -57,9 +57,8 @@ def search_one_type(sp, search_name, type, limit=3, line_adjustment=28):
 
             print(str(idx+1) + " \t " + str(name) + " "*(line_adjustment-len(name) - emoji_len_count) + extra_info)
             search_dict[idx + 1] = [name, search_id, search_uri, item['name']]
-        choose_search = input("\n1. Choose corresponding number to desired " + str(type) + "."
-                            "\n2. Increase number of searches by specifing a larger number than " + str(len(search_dict)) +
-                             ".\n3. Specify a new search. \n4. 'x' to exit. \n")
+        choose_search = input("\nChoose corresponding number to desired " + str(type) + " or a higher number to see more search results."
+                            " Type in a new search keyword to search again ('x' to exit): \n\nNew search/number: ")
         if utl.RepresentsInt(choose_search) and int(choose_search) > 0 and int(choose_search) <= len(search_dict):
             return search_dict[int(choose_search)]
         if choose_search == 'x':
@@ -355,9 +354,10 @@ def add_song_to_queue(spotify_object, id, track_name, artist, following_artist):
             print(Fore.WHITE + "Adding " + Fore.LIGHTGREEN_EX + str(track_name) + Fore.WHITE + " (" + str(artist) + ") to queue. " + Fore.WHITE)
         return 1
     except Exception as e:
-        #print(Fore.LIGHTRED_EX + "Player command failed: No active device found. Reason: NO_ACTIVE_DEVICE.")
-        #print("One device must play music before this can be done." + Fore.WHITE)
-        print(Fore.LIGHTRED_EX + str(e) + Fore.WHITE)
+        if str(e).find("No active") != -1:
+            print(Fore.LIGHTRED_EX + "Player command failed: No active device found. Reason: NO_ACTIVE_DEVICE."+ Fore.WHITE)
+        else:
+            print(Fore.LIGHTRED_EX + str(e) + Fore.WHITE)
         return 0
 
 

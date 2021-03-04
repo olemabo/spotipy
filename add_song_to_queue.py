@@ -187,6 +187,9 @@ def add_desired_song_to_queue(query, spotify_object, type='track', limit=3):
 
 def search_for_artist_show_tracks_grouped_by_album_add_queue(sp):
     trackName, trackURIs, artist_name = search.search_for_artist_show_tracks_grouped_by_album(sp)
+    if trackName == -1:
+        utl.clear_terminal()
+        return
     response = utl.proceed(message="Do you want to add song to queue?")
     if response:
         let_user_specify_which_songs_to_queue(trackURIs, trackName, artist_name, sp)
