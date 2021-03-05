@@ -284,6 +284,9 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
 
     nice_numbers = specify_number_in_range_from_list(dict_number_to_playlist, what_to_choose_from="playlist")
 
+    if nice_numbers == -1:
+        return -1
+
     return_playlist = []
     print("\nYour choice(s): ")
     for idx, num in enumerate(nice_numbers):

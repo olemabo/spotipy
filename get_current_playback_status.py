@@ -1,7 +1,7 @@
-import spotipy
-import utility_spotify as utl_sp
 from colorama import Fore
-import json
+import sys, select
+import utility_functions as utl
+from time import sleep
 
 def return_artists_as_string(artists):
     """
@@ -24,15 +24,8 @@ def return_artists_as_string(artists):
     return "Artists: " + tot_string
 
 
-def get_current_playback_status(spotify_object):
-    current_playback = spotify_object.current_playback()
-    if current_playback == None:
-        print("The current device is not active at the moment. ")
-        return -1
-
+def print_standard_info(spotify_object, current_playback):
     song_artist_info = current_playback['item']
-
-
     shuffle_dict = {"True": "ON", "False": "OFF"}
     shuffle_repeat = {"off": "OFF", "context": "playlist repeat", "track": "track repeat"}
     print("Username: " + spotify_object.current_user()['display_name'])
@@ -41,32 +34,42 @@ def get_current_playback_status(spotify_object):
     print("Shuffle state: " + shuffle_dict[str(current_playback['shuffle_state'])])
     print("Volume percent: " + str(current_playback['device']['volume_percent']) + "%\n")
     if song_artist_info['name'] != song_artist_info['album']['name']:
-        print("Currently playing: " + Fore.LIGHTBLUE_EX + song_artist_info['name'] + Fore.WHITE + " (" + song_artist_info['album']['name'] + ")")
+        print("Currently playing: " + Fore.LIGHTBLUE_EX + song_artist_info['name'] + Fore.WHITE + " (" +
+              song_artist_info['album']['name'] + ")")
     else:
         print("Currently playing: " + Fore.LIGHTBLUE_EX + song_artist_info['name'] + Fore.WHITE)
 
-    artists_string = return_artists_as_string(song_artist_info['album']['artists'])
-    #print(artists_string)
+    data = spotify_object.currently_playing()
+    action = data['actions']['disallows'].items()
+    current_action = ""  # ('pausing', True)
+    for i in action:
+        current_action = i
+    print("Status: " + str(current_action[0]))  # return to start of line, after '['
 
+#artists_string = return_artists_as_string(song_artist_info['album']['artists'])
+#print(artists_string)
+
+
+def get_current_playback_status(spotify_object):
+    current_playback = spotify_object.current_playback()
+    if current_playback == None:
+        print("The current device is not active at the moment. ")
+        return -1
+
+    print_standard_info(spotify_object, current_playback)
 
     data = spotify_object.currently_playing()
 
     current_time_ms = data['progress_ms']
     track_duration = data['item']['duration_ms']
-    action = data['actions']['disallows'].items()
-    current_action = ""  # ('pausing', True)
-    for i in action:
-        current_action = i
 
     total = 20
     percentage = current_time_ms / track_duration
-    played = int(total * percentage)
-    unplayed = total - played
-    print("Status: " + str(current_action[0]))  # return to start of line, after '['
-    print("[" + "*" * (played) + " " * unplayed + "]\n")  # return to start of line, after '['
+    #played = int(total * percentage)
+    #unplayed = total - played
+    #print("[" + '\033[5;36m\033[5;47m' + "*" * (played) + " " * unplayed + "]\n")  # return to start of line, after '['
 
-    return 0
-
-
-#sp = utl_sp.create_spotify_object()
-#get_current_playback_status(sp)
+    played = int(percentage * 100)
+    unitColor = '\033[5;37m\033[5;47m'
+    endColor = '\033[0;0m\033[0;0m'
+    print('|' + unitColor + '\033[7m' + ' '*(played//4) + ' \033[27m' + endColor + ' '*((100-played)//4) + '|\n')

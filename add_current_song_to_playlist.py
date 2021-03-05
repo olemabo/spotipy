@@ -17,7 +17,7 @@ def add_current_song_to_playlist2(sp, public=True, private=True, collaborative=T
     print("You will now have to choose which playlists to add the song to.")
     playlists = utl_sp.see_my_public_playlists(sp, public, private, collaborative)
     if playlists == -1:
-        return "No public playlist found."
+        return ""
 
     while True:
         still_want_to_add = input("\nDo you still want to add the song to these playlists? (y/n): ")

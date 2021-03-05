@@ -1,4 +1,5 @@
 from colorama import Fore
+import sys, select
 
 # my functions
 import utility_spotify as utl_sp
@@ -48,8 +49,24 @@ def spotify_terminal_interface():
 
         if user_choice == 0:
             utl.clear_terminal()
-            gcps.get_current_playback_status(sp)
-            response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
+            while True:
+                gcps.get_current_playback_status(sp)
+
+                print("Do you want to modify playback ? y/n")
+                print("('a' = add current song to playlist)")
+                i, o, e = select.select([sys.stdin], [], [], 10)
+                "TODO: You should only refresh progress bar, if it is not a new song or new device ..."
+                if (i):
+                    resp = sys.stdin.readline().strip()
+                    if resp == "y" or resp == "n" or resp == "a":
+                        response = resp
+                        utl.clear_terminal()
+                        break
+                utl.clear_terminal()
+
+            #gcps.get_current_playback_status(sp)
+            #response = utl.proceed_or_refresh(message="Do you want to modify playback (r = refresh) ?")
+
             skip_choice = False
             if response == 'y':
                 user_choice = 1
@@ -57,6 +74,10 @@ def spotify_terminal_interface():
             if response == 'r':
                 user_choice = 0
                 skip_choice = True
+            if response == 'a':
+                user_choice = 3
+                skip_choice = True
+
 
 
 
@@ -105,7 +126,9 @@ def spotify_terminal_interface():
         if user_choice == 3:
             output_log = add_cur_song.add_current_song_to_playlist2(sp=sp, public=True, private=True, collaborative=True)
             utl.clear_terminal()
-            if utl.RepresentsString(output_log):
+            check_list = isinstance(output_log, list)
+
+            if utl.RepresentsString(output_log) and check_list == False:
                 print(output_log + "\n")
             elif len(output_log) > 0:
                 for i in output_log:

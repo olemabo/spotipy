@@ -3,11 +3,11 @@ import spotipy
 import argparse, sys
 from colorama import Fore
 import utility_functions as utl
-import numpy as np
 
 
 legal_attributes = ['repeat', 'shuffle', 'volume', 'seek', 'transfer']
 
+"""
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         parser.exit()
 
     args = parser.parse_args()
-
+"""
 
 def print_feedback_info_modify():
     space = 0
