@@ -35,3 +35,7 @@ related artists to floowed rtists, artist top tracks
 # When search artist, also choose to follow artist or current artist
 
 # Playlist stuff. Create playlist.
+
+# Each call in everything should be one line. Like:
+        #if user_choice == 5:
+        #    fooc.first_occurance(sp)

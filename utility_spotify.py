@@ -4,21 +4,22 @@ from colorama import Fore
 import utility_functions as utl
 import os
 
-USER_NAME = 'olemabo'
+#USER_NAME = 'olemabo'
 scope = 'user-read-private user-read-playback-state user-modify-playback-state ' \
         'playlist-modify-public playlist-modify-private user-read-currently-playing'
 scope += ' user-read-private user-top-read playlist-read-private playlist-read-collaborative'
 
 
-def create_spotify_object(scope=scope, username=USER_NAME):
+def create_spotify_object(scope=scope):
     # Create our spotify object with permissions
     global_path = os.path.dirname(os.path.abspath(__file__))
-    auth = SpotifyOAuth(username=username, scope=scope, open_browser=True, cache_path=global_path + "/.cache")
+    #auth = SpotifyOAuth(username=username, scope=scope, open_browser=True, cache_path=global_path + "/.cache")
+    auth = SpotifyOAuth(scope=scope, open_browser=True, cache_path=global_path + "/.cache")
     return spotipy.Spotify(oauth_manager=auth)
 
 
 
-def create_spotify_object_non_auth(username=USER_NAME):
+def create_spotify_object_non_auth():
     return spotipy.Spotify(spotipy.SpotifyClientCredentials())
 
 
@@ -71,7 +72,6 @@ def search_one_type(sp, search_name, type, limit=3, line_adjustment=28):
                 limit = int(choose_search)
 
 
-
 def return_device_info(sp):
     """
     [id, name, type, is_active], number of devices found
@@ -99,21 +99,23 @@ def find_current_song_return_id(sp):
     playing_type = data['currently_playing_type']  # track, ...
     return track_name, artist_name, track_uri, playing_type
 
+
 def get_artist_id_from_track_id(spotify_object, track_uri):
     track_info = spotify_object.track(track_uri)
     return track_info['album']['artists'][0]['id']
+
 
 def get_artist_name_from_track_id(spotify_object, track_uri):
     track_info = spotify_object.track(track_uri)
     return track_info['album']['artists'][0]['name']
 
 
-def color_names(print_str, info, number, name):
+def color_names(print_str, info, number, name, user_name):
     owner = info['owner']['display_name']
     collab = info['collaborative']
     public = info['public']
     return_color = Fore.WHITE
-    if owner != USER_NAME and not collab:
+    if owner != user_name and not collab:
         print_str += str(number) + ": " + Fore.LIGHTRED_EX + name + Fore.WHITE
         return_color = Fore.LIGHTRED_EX
     elif collab:
@@ -174,7 +176,7 @@ def show_info_and_append_to_dict(data, start_count=0, columns=3, jumps=28, print
     return dict_number_to_playlist, number
 
 
-def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0, columns=3, jumps=28, printing=True):
+def show_tracks_and_append_to_dict(user_name, data, dict_number_to_playlist, start_count=0, columns=3, jumps=28, printing=True):
     """
     :param data:
     :param dict_number_to_playlist:
@@ -197,7 +199,7 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
 
             name, num_emojier = utl.shorten_long_names_count_emojis(info['name'], max_letters=15)
             tot_emoji += num_emojier
-            print_str, print_color = color_names(print_str, info, number, name)
+            print_str, print_color = color_names(print_str, info, number, name, user_name)
             print_str += " "*(jumps*(column+1) - len(print_str) - tot_emoji)
             dict_number_to_playlist[number] = [info['name'], info['id'], info['uri'], print_color]
         if printing:
@@ -211,7 +213,7 @@ def show_tracks_and_append_to_dict(data, dict_number_to_playlist, start_count=0,
 
             name, num_emojier = utl.shorten_long_names_count_emojis(info['name'], max_letters=15)
 
-            last_str, print_color = color_names(last_str, info, number, name)
+            last_str, print_color = color_names(last_str, info, number, name, user_name)
 
             last_str += " " * (jumps*(idx+1) - len(last_str))
             dict_number_to_playlist[number] = [info['name'], info['id'], info['uri'], print_color]
@@ -238,9 +240,9 @@ def set_dividable_limits_based_on_num_playlists(total_playlists):
     return columns, jumps, limit
 
 
-def filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist):
+def filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object):
     # this will filter out playlists not made be you (collaborative playlists not made be you will still pass)
-    if remove_spotify_playlist and i['owner']['display_name'] != USER_NAME and i['collaborative'] == False:
+    if remove_spotify_playlist and i['owner']['display_name'] != "olemabo" and i['collaborative'] == False:
         return playlist_to_use
     elif i['public'] == public:
         playlist_to_use.append(i)
@@ -255,12 +257,12 @@ def filter_playlists(playlist_to_use, i, public, private, collaborative, remove_
 def select_playlists(sp, data, public=True, private=True, collaborative=True, remove_spotify_playlist=False):
     playlist_to_use = []
     for i in data['items']:
-        playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist)
+        playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object=sp)
 
     while data['next']:
         data = sp.next(data)
         for i in data['items']:
-            playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist)
+            playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object=sp)
 
     return playlist_to_use
 
@@ -279,7 +281,9 @@ def see_my_public_playlists(sp, public=True, private=True, collaborative=True):
     total_playlists = len(playlist_to_show)
     columns, jumps, limit = set_dividable_limits_based_on_num_playlists(total_playlists)
 
-    dict_number_to_playlist, counter = show_tracks_and_append_to_dict(playlist_to_show, dict_number_to_playlist,
+    user_name = sp.current_user()['id']
+
+    dict_number_to_playlist, counter = show_tracks_and_append_to_dict(user_name, playlist_to_show, dict_number_to_playlist,
                                                                       columns=columns, jumps=jumps)
 
     nice_numbers = specify_number_in_range_from_list(dict_number_to_playlist, what_to_choose_from="playlist")
@@ -317,8 +321,8 @@ def return_all_playlists(sp, public=True, private=True, collaborative=True, prin
     dict_number_to_playlist = dict()
     total_playlists = len(playlist_to_show)
     columns, jumps, limit = set_dividable_limits_based_on_num_playlists(total_playlists)
-
-    dict_number_to_playlist, counter = show_tracks_and_append_to_dict(playlist_to_show, dict_number_to_playlist,
+    user_name = sp.current_user()['id']
+    dict_number_to_playlist, counter = show_tracks_and_append_to_dict(user_name, playlist_to_show, dict_number_to_playlist,
                                                                       columns=columns, jumps=jumps, printing=printing)
     return dict_number_to_playlist
 
