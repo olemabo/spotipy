@@ -143,6 +143,7 @@ def show_info_and_append_to_dict(data, start_count=0, columns=3, jumps=28, print
     num_playlists = len(data)
     odd = len(data) % columns
     dict_number_to_playlist = {}
+    number = 0
     for idx in range(num_playlists//columns):
         print_str = ""
         tot_emoji = 0
@@ -189,7 +190,7 @@ def show_tracks_and_append_to_dict(user_name, data, dict_number_to_playlist, sta
     num_playlists = len(data)
     odd = len(data) % columns
     #odd = len(data['items']) % columns
-
+    number = 0
     for idx in range(num_playlists//columns):
         print_str = ""
         tot_emoji = 0
@@ -240,29 +241,32 @@ def set_dividable_limits_based_on_num_playlists(total_playlists):
     return columns, jumps, limit
 
 
-def filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object):
+def filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, user_name):
     # this will filter out playlists not made be you (collaborative playlists not made be you will still pass)
-    if remove_spotify_playlist and i['owner']['display_name'] != "olemabo" and i['collaborative'] == False:
+
+    if remove_spotify_playlist and i['owner']['display_name'] != user_name and not i['collaborative']:
         return playlist_to_use
-    elif i['public'] == public:
+    elif public and i['public'] == True:
         playlist_to_use.append(i)
-    elif private:
-        if i['public'] == False:
-            playlist_to_use.append(i)
-    elif i['collaborative'] == collaborative:
+    elif private and i['public'] == False:
+        playlist_to_use.append(i)
+    elif collaborative and i['collaborative'] == True:
+        playlist_to_use.append(i)
+    elif remove_spotify_playlist == False and i['owner']['display_name'] != user_name and not i['collaborative']:
         playlist_to_use.append(i)
     return playlist_to_use
 
 
 def select_playlists(sp, data, public=True, private=True, collaborative=True, remove_spotify_playlist=False):
     playlist_to_use = []
+    user_name = sp.current_user()['id']
     for i in data['items']:
-        playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object=sp)
+        playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, user_name)
 
     while data['next']:
         data = sp.next(data)
         for i in data['items']:
-            playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, spotify_object=sp)
+            playlist_to_use = filter_playlists(playlist_to_use, i, public, private, collaborative, remove_spotify_playlist, user_name)
 
     return playlist_to_use
 
@@ -314,9 +318,9 @@ def specify_number_in_range_from_list(dict, what_to_choose_from="playlist"):
     return nice_numbers
 
 
-def return_all_playlists(sp, public=True, private=True, collaborative=True, printing=False):
+def return_all_playlists(sp, public=True, private=True, collaborative=True, printing=False, remove_spotify_playlist=False):
     data = sp.current_user_playlists()
-    playlist_to_show = select_playlists(sp, data, public, private, collaborative)
+    playlist_to_show = select_playlists(sp, data, public, private, collaborative, remove_spotify_playlist=remove_spotify_playlist)
 
     dict_number_to_playlist = dict()
     total_playlists = len(playlist_to_show)
